@@ -26,6 +26,7 @@ db.sqlite3
 db.sqlite3-journal
 staticfiles/
 media/
+
 # Environment secrets
 .env
 .env.*
@@ -48,4 +49,8 @@ htmlcov/
 # Misc
 *.bak
 *.tmp
-split.py
+
+# Local SQLite settings and private database backups
+config/sqlite_settings.py
+royalty_events_backup*.json
+split.pysplit.py
