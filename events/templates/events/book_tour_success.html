@@ -1,0 +1,258 @@
+{% extends "events/base.html" %}
+{% load static %}
+
+{% block title %}Enquiry Confirmed — Royalty Events{% endblock %}
+
+{% block extra_head %}
+<style>
+  body { background: #eef0f3 !important; }
+  .success-page {
+    background: #eef0f3;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 50px 5%;
+  }
+  .success-card {
+    background: #fff;
+    max-width: 580px;
+    width: 100%;
+    padding: 50px 50px 44px;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+    border-radius: 4px;
+  }
+  .success-logo {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .success-logo-box {
+    width: 140px;
+    height: 140px;
+    background: #0d1b2a;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .success-logo-box img { height: 110px; width: auto; object-fit: contain; }
+  .success-logo-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #0d1b2a;
+    font-weight: 600;
+  }
+  .success-check {
+    width: 52px;
+    height: 52px;
+    background: #dcfce7;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 24px;
+  }
+  .success-card h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .success-sub {
+    color: #666;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .ref-badge {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .ref-badge .ref-label { font-size: 10px; color: #999; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+  .ref-badge .ref-code {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #0d1b2a;
+    letter-spacing: 3px;
+    font-weight: 600;
+  }
+  .detail-section {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 24px;
+    margin-bottom: 28px;
+  }
+  .detail-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #999;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .detail-row {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.5;
+  }
+  .detail-icon { min-width: 20px; color: #c9a961; font-size: 16px; margin-top: 1px; }
+  .detail-label { font-weight: 600; color: #000; display: block; margin-bottom: 1px; }
+  .detail-value { color: #555; }
+  .next-steps {
+    background: #f8f9fb;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+  .next-steps-title { font-size: 11px; font-weight: 700; color: #333; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .next-step-item { display: flex; gap: 10px; font-size: 12px; color: #555; line-height: 1.6; margin-bottom: 8px; }
+  .next-step-num {
+    min-width: 22px;
+    height: 22px;
+    background: #0d1b2a;
+    color: var(--gold, #c9a961);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .success-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .success-btn-primary {
+    background: #0d1b2a;
+    color: var(--gold, #c9a961);
+    padding: 12px 28px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: 1px solid #c9a961;
+    transition: background 0.2s;
+    border-radius: 2px;
+  }
+  .success-btn-primary:hover { background: #1a2a3a; }
+  .success-btn-secondary {
+    background: transparent;
+    color: #666;
+    padding: 12px 28px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    border: 1px solid #ddd;
+    transition: border-color 0.2s, color 0.2s;
+    border-radius: 2px;
+  }
+  .success-btn-secondary:hover { border-color: #999; color: #333; }
+  @media (max-width: 600px) {
+    .success-card { padding: 32px 24px; }
+    .success-actions { flex-direction: column; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-page">
+  <div class="success-card">
+    <div class="success-logo">
+      <div class="success-logo-box">
+        <img src="{% static 'images/royalty.png' %}" alt="Royalty Events" />
+      </div>
+      <div class="success-logo-label">ROYALTY EVENT PRODUCTION</div>
+    </div>
+
+    <div style="text-align:center; margin-bottom:16px;">
+      <div class="success-check">✓</div>
+    </div>
+
+    <h1>Thank You, {{ enquiry.full_name }}!</h1>
+    <p class="success-sub">
+      Your venue tour enquiry has been received and saved.<br>
+      Our team will contact you within <strong>1–2 business days</strong>.
+    </p>
+
+    <div class="ref-badge">
+      <div class="ref-label">Enquiry Reference</div>
+      <div class="ref-code">{{ enquiry.reference }}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title">Your Enquiry Summary</div>
+
+      <div class="detail-row">
+        <span class="detail-icon"><i class="bi bi-person"></i></span>
+        <div>
+          <span class="detail-label">Name</span>
+          <span class="detail-value">{{ enquiry.full_name }}</span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-icon"><i class="bi bi-envelope"></i></span>
+        <div>
+          <span class="detail-label">Email</span>
+          <span class="detail-value">{{ enquiry.email }}</span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-icon"><i class="bi bi-calendar-event"></i></span>
+        <div>
+          <span class="detail-label">Event Type</span>
+          <span class="detail-value">{{ enquiry.event_type }}</span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-icon"><i class="bi bi-calendar-check"></i></span>
+        <div>
+          <span class="detail-label">Desired Date</span>
+          <span class="detail-value">{{ enquiry.event_date|date:"F j, Y" }}</span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-icon"><i class="bi bi-people"></i></span>
+        <div>
+          <span class="detail-label">Guest Count</span>
+          <span class="detail-value">Approximately {{ enquiry.guest_count }} guests</span>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-icon"><i class="bi bi-geo-alt"></i></span>
+        <div>
+          <span class="detail-label">Venue</span>
+          <span class="detail-value">2575 S. Dairy Ashford Ste. N, Houston, TX 77077</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="next-steps">
+      <div class="next-steps-title">What Happens Next?</div>
+      <div class="next-step-item"><div class="next-step-num">1</div><span>A confirmation email has been sent to <strong>{{ enquiry.email }}</strong>.</span></div>
+      <div class="next-step-item"><div class="next-step-num">2</div><span>Our team will review your enquiry and reach out within 1–2 business days.</span></div>
+      <div class="next-step-item"><div class="next-step-num">3</div><span>We'll schedule your private venue tour at a mutually convenient time.</span></div>
+    </div>
+
+    <div class="success-actions">
+      <a href="{% url 'home' %}" class="success-btn-primary">Back to Home</a>
+      <a href="{% url 'book_tour' %}" class="success-btn-secondary">Submit Another Enquiry</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "events/base.html" %}
+{% load static %}
+{% block title %}Sign In — Royalty Events{% endblock %}
+
+{% block extra_head %}
+<style>
+  .auth-page {
+    min-height: 80vh;
+    background: #080808;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+  }
+  .auth-card {
+    background: #141414;
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 440px;
+    color: #fff;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  }
+  .auth-card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #d4af37;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .auth-card p.subtitle {
+    color: #888;
+    font-size: 0.95rem;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    color: #bbb;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .form-group input {
+    width: 100%;
+    background: #1e1e1e;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  .form-group input:focus {
+    border-color: #d4af37;
+    outline: none;
+  }
+  .btn-gold {
+    width: 100%;
+    background: linear-gradient(135deg, #d4af37, #aa820a);
+    color: #000;
+    font-weight: 600;
+    padding: 13px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+  }
+  .btn-gold:hover { opacity: 0.9; }
+  .auth-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: #777;
+  }
+  .auth-footer a {
+    color: #d4af37;
+    text-decoration: none;
+  }
+  .error-box {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #f87171;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card">
+    <h1>Welcome Back</h1>
+    <p class="subtitle">Access your event bookings and private portal</p>
+
+    {% if form.errors %}
+      <div class="error-box">
+        Your username and password did not match. Please try again.
+      </div>
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_username">Username</label>
+        <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label for="id_password">Password</label>
+        <input type="password" name="password" autocomplete="current-password" required id="id_password" placeholder="Enter password">
+      </div>
+
+      <button type="submit" class="btn-gold">Sign In</button>
+      {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+      {% endif %}
+    </form>
+
+    <div class="auth-footer">
+      Don't have an account? <a href="{% url 'register' %}">Create account</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "events/base.html" %}
+{% load static %}
+{% block title %}Server Error — Royalty Events{% endblock %}
+
+{% block content %}
+<div style="background: #080808; min-height: 75vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; color: #fff;">
+  <div style="max-width: 550px;">
+    <p style="color: #ef4444; font-size: 5rem; font-weight: 700; margin: 0; line-height: 1; font-family: 'Playfair Display', serif;">500</p>
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin: 20px 0 15px; color: #fff;">An Unexpected Royal Delay</h1>
+    <p style="color: #888; font-size: 1.05rem; line-height: 1.6; margin-bottom: 30px;">
+      Our systems encountered an unforeseen complication. Our technical concierges have been alerted and are investigating.
+    </p>
+    <div>
+      <a href="{% url 'home' %}" style="background: linear-gradient(135deg, #d4af37, #aa820a); color: #000; padding: 12px 28px; border-radius: 6px; text-decoration: none; font-weight: 600;">Return to Safety</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

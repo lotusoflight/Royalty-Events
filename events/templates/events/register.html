@@ -1,0 +1,63 @@
+{% extends "events/base.html" %}
+{% load static %}
+{% block title %}Register — Royalty Events{% endblock %}
+
+{% block extra_head %}
+<style>
+  .auth-page {
+    min-height: 80vh; background: #080808; display: flex; align-items: center;
+    justify-content: center; padding: 60px 5%;
+  }
+  .auth-card {
+    background: #0d0d0d; border: 1px solid #1a1a1a; padding: 48px 44px;
+    max-width: 480px; width: 100%;
+  }
+  .auth-logo { text-align: center; margin-bottom: 32px; }
+  .auth-title { font-family: 'Playfair Display', serif; font-size: 28px; color: #fff; font-weight: 400; text-align: center; margin-bottom: 8px; }
+  .auth-sub { color: #666; font-size: 12.5px; text-align: center; margin-bottom: 32px; line-height: 1.5; }
+  .auth-field { margin-bottom: 20px; }
+  .auth-label { display: block; font-size: 11px; color: #aaa; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .auth-actions { margin-top: 28px; }
+  .auth-submit {
+    width: 100%; padding: 14px; background: var(--gold-light); color: #000;
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;
+    border: none; cursor: pointer; transition: background 0.2s; font-family: 'Inter', sans-serif;
+  }
+  .auth-submit:hover { background: var(--gold); }
+  .auth-link { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
+  .auth-link a { color: var(--gold); }
+  .field-errors { color: #f87171; font-size: 11px; margin-top: 4px; }
+  .help-text { color: #555; font-size: 10.5px; margin-top: 4px; line-height: 1.4; }
+  @media (max-width: 500px) { .auth-card { padding: 32px 24px; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <img src="{% static 'images/royalty.png' %}" alt="Royalty Events" style="height:48px; width:auto; margin:0 auto 12px;" />
+    </div>
+    <h1 class="auth-title">Create Account</h1>
+    <p class="auth-sub">Join Royalty Events to book seats and manage your reservations.</p>
+
+    <form method="POST" novalidate>
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="auth-field">
+        <label class="auth-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}<div class="field-errors">{{ error }}</div>{% endfor %}
+        {% if field.help_text %}<div class="help-text">{{ field.help_text|safe }}</div>{% endif %}
+      </div>
+      {% endfor %}
+      <div class="auth-actions">
+        <button type="submit" class="auth-submit">Create Account</button>
+      </div>
+    </form>
+    <div class="auth-link">
+      Already have an account? <a href="{% url 'login' %}">Sign in</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

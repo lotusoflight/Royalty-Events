@@ -1,0 +1,531 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="{% block meta_description %}Royalty Events — Houston's premier luxury venue for weddings, private celebrations, and corporate galas.{% endblock %}" />
+    <title>{% block title %}Royalty Events — Designed for the Refined{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/royalty_logo.png' %}" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/royalty_logo.png' %}" />
+    <link rel="apple-touch-icon" href="{% static 'images/royalty_logo.png' %}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <style>
+      /* ── Design Tokens ─────────────────────────────── */
+      :root {
+        --gold: #c9a961;
+        --gold-light: #e8d5a3;
+        --gold-dark: #a08840;
+        --black: #080808;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --dark-3: #1a1a1a;
+        --gray: #8a8a8a;
+        --text: #e5e5e5;
+        --white: #ffffff;
+        --nav-height: 72px;
+        --radius: 2px;
+        --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* ── Reset ─────────────────────────────────────── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body {
+        background: var(--black);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { text-decoration: none; color: inherit; }
+      img { display: block; max-width: 100%; }
+
+      /* ── Navigation ─────────────────────────────────── */
+      .luxe-nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        height: var(--nav-height);
+        background: rgba(8, 8, 8, 0.96);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--dark-3);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 5%;
+        transition: background var(--transition);
+      }
+
+      /* Brand */
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--gold);
+        font-family: 'Playfair Display', serif;
+        font-size: 13px;
+        letter-spacing: 1.5px;
+        flex-shrink: 0;
+      }
+      .nav-brand img { height: 22px; width: auto; }
+
+      /* Desktop links */
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-links a {
+        color: #ccc;
+        font-size: 10px;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        padding: 8px 14px;
+        border-radius: 2px;
+        transition: color var(--transition);
+        white-space: nowrap;
+      }
+      .nav-links a:hover,
+      .nav-links a.active { color: var(--gold); }
+
+      /* CTA button */
+      .nav-cta {
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        padding: 9px 20px;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        transition: background var(--transition), color var(--transition);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .nav-cta:hover { background: var(--gold); color: #000; }
+
+      /* Auth links */
+      .nav-auth {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: 16px;
+      }
+      .nav-auth a {
+        color: #999;
+        font-size: 10px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: color var(--transition);
+      }
+      .nav-auth a:hover { color: var(--gold); }
+
+      /* Hamburger — mobile */
+      .nav-hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        padding: 6px;
+        background: none;
+        border: none;
+        z-index: 1001;
+      }
+      .nav-hamburger span {
+        display: block;
+        width: 24px;
+        height: 1.5px;
+        background: var(--text);
+        transition: transform var(--transition), opacity var(--transition);
+      }
+      .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+      .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+      .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+      /* Mobile menu drawer */
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        inset: 0;
+        top: var(--nav-height);
+        background: rgba(8, 8, 8, 0.98);
+        backdrop-filter: blur(20px);
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--transition);
+      }
+      .mobile-menu.open {
+        display: flex;
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .mobile-menu a {
+        color: var(--text);
+        font-size: 18px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-family: 'Playfair Display', serif;
+        font-weight: 400;
+        transition: color var(--transition);
+      }
+      .mobile-menu a:hover { color: var(--gold); }
+      .mobile-menu .mobile-cta {
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        padding: 12px 32px;
+        font-size: 11px;
+        letter-spacing: 2px;
+        font-family: 'Inter', sans-serif;
+        margin-top: 8px;
+      }
+
+      @media (max-width: 900px) {
+        .nav-links, .nav-auth { display: none; }
+        .nav-cta { display: none; }
+        .nav-hamburger { display: flex; }
+      }
+
+      /* ── Flash Messages ─────────────────────────────── */
+      .flash-container {
+        position: fixed;
+        top: calc(var(--nav-height) + 12px);
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 360px;
+      }
+      .flash-msg {
+        padding: 12px 18px;
+        font-size: 12px;
+        letter-spacing: 0.3px;
+        line-height: 1.5;
+        border-radius: 3px;
+        animation: slideIn 0.3s ease;
+      }
+      .flash-msg.success { background: var(--gold); color: #000; font-weight: 500; }
+      .flash-msg.error { background: #c0392b; color: #fff; }
+      .flash-msg.info { background: #1a3a5c; color: #fff; border: 1px solid #2563eb; }
+      .flash-msg.warning { background: #7a4f00; color: var(--gold-light); }
+      @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+      /* ── Footer ─────────────────────────────────────── */
+      .luxe-footer { background: #050505; padding: 0 5%; color: var(--text); }
+      .footer-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--dark-3), transparent); }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+        gap: 48px;
+        padding: 64px 0;
+      }
+      .footer-brand h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 26px;
+        letter-spacing: 2px;
+        color: var(--white);
+        line-height: 1.1;
+      }
+      .footer-desc {
+        color: var(--gray);
+        font-size: 12.5px;
+        line-height: 1.8;
+        margin-top: 20px;
+        max-width: 360px;
+        font-weight: 300;
+      }
+      .footer-section-title {
+        color: var(--gold);
+        font-size: 10px;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+      .footer-links { list-style: none; }
+      .footer-links li { margin-bottom: 12px; }
+      .footer-links a {
+        color: #ccc;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        transition: color var(--transition);
+      }
+      .footer-links a:hover { color: var(--gold); }
+      .footer-contact-item { font-size: 12px; color: #aaa; line-height: 2; }
+      .footer-contact-item i { color: var(--gold); margin-right: 8px; }
+      .footer-bottom {
+        border-top: 1px solid var(--dark-3);
+        padding: 22px 0;
+        text-align: center;
+        color: #444;
+        font-size: 10px;
+        letter-spacing: 1px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      @media (max-width: 900px) {
+        .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; padding: 48px 0; }
+      }
+      @media (max-width: 500px) {
+        .footer-grid { grid-template-columns: 1fr; }
+        .footer-bottom { justify-content: center; }
+      }
+
+      /* ── Shared Utility ─────────────────────────────── */
+      .gold-label {
+        color: var(--gold);
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+      .section-heading {
+        font-family: 'Playfair Display', serif;
+        font-size: 42px;
+        font-weight: 400;
+        color: var(--white);
+        letter-spacing: 1px;
+        line-height: 1.1;
+      }
+      .section-subtext {
+        color: var(--gray);
+        font-size: 12.5px;
+        line-height: 1.7;
+        font-weight: 300;
+        max-width: 520px;
+      }
+      .gold-line { width: 60px; height: 1px; background: var(--gold); margin: 18px 0; }
+      .num-line { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+      .num-line .line { width: 35px; height: 1px; background: var(--gold); }
+      .num-line span { color: var(--gold); font-size: 10px; letter-spacing: 2px; }
+      .btn-gold {
+        display: inline-block;
+        background: var(--gold-light);
+        color: #000;
+        padding: 12px 28px;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-weight: 600;
+        transition: background var(--transition), color var(--transition);
+      }
+      .btn-gold:hover { background: var(--gold); color: #000; }
+      .btn-outline-gold {
+        display: inline-block;
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        padding: 12px 28px;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        transition: background var(--transition), color var(--transition);
+      }
+      .btn-outline-gold:hover { background: var(--gold); color: #000; }
+
+      /* ── Form inputs (used on register/login) ─────── */
+      .luxe-input {
+        width: 100%;
+        background: #111;
+        border: 1px solid #222;
+        color: var(--white);
+        padding: 13px 16px;
+        font-size: 13px;
+        font-family: 'Inter', sans-serif;
+        border-radius: var(--radius);
+        transition: border-color var(--transition);
+        outline: none;
+      }
+      .luxe-input:focus { border-color: var(--gold); }
+      .luxe-input::placeholder { color: #555; }
+      .form-error { color: #ff6b6b; font-size: 11px; margin-top: 4px; }
+
+      /* ── Skip to content ────────────────────────────── */
+      .skip-link {
+        position: absolute;
+        top: -100%;
+        left: 16px;
+        background: var(--gold);
+        color: #000;
+        padding: 8px 16px;
+        z-index: 9999;
+        font-size: 12px;
+      }
+      .skip-link:focus { top: 8px; }
+    </style>
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav class="luxe-nav" role="navigation" aria-label="Main navigation">
+      <a href="{% url 'home' %}" class="nav-brand" aria-label="Royalty Events home">
+        <img src="{% static 'images/royalty.png' %}" alt="Royalty Events logo" />
+        ROYALTY <span style="color:#ff4d6d; font-size:11px;">❤</span> EVENTS
+      </a>
+
+      <div class="nav-links" role="menubar">
+        <a href="{% url 'the_venue' %}" role="menuitem" {% if request.resolver_match.url_name == 'the_venue' %}class="active" aria-current="page"{% endif %}>The Venue</a>
+        <a href="{% url 'weddings' %}" role="menuitem" {% if request.resolver_match.url_name == 'weddings' %}class="active" aria-current="page"{% endif %}>Weddings</a>
+        <a href="{% url 'celebrations' %}" role="menuitem" {% if request.resolver_match.url_name == 'celebrations' %}class="active" aria-current="page"{% endif %}>Celebrations</a>
+        <a href="{% url 'gallery' %}" role="menuitem" {% if request.resolver_match.url_name == 'gallery' %}class="active" aria-current="page"{% endif %}>Gallery</a>
+        <a href="{% url 'tour_venue' %}" role="menuitem" {% if request.resolver_match.url_name == 'tour_venue' %}class="active" aria-current="page"{% endif %}>Tour Our Venue</a>
+        <a href="{% url 'event_list' %}" role="menuitem" {% if request.resolver_match.url_name == 'event_list' %}class="active" aria-current="page"{% endif %}>Events</a>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div class="nav-auth">
+          {% if user.is_authenticated %}
+            {% if user.is_staff %}
+              <a href="{% url 'dashboard' %}"><i class="bi bi-grid-3x3-gap"></i> Dashboard</a>
+            {% endif %}
+            <a href="{% url 'my_bookings' %}">My Bookings</a>
+            <a href="{% url 'logout' %}">Logout</a>
+          {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+          {% endif %}
+        </div>
+        <a href="{% url 'book_tour' %}" class="nav-cta">Book A Tour</a>
+        <button class="nav-hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+      <a href="{% url 'the_venue' %}">The Venue</a>
+      <a href="{% url 'weddings' %}">Weddings</a>
+      <a href="{% url 'celebrations' %}">Celebrations</a>
+      <a href="{% url 'gallery' %}">Gallery</a>
+      <a href="{% url 'tour_venue' %}">Tour Our Venue</a>
+      <a href="{% url 'event_list' %}">Events</a>
+      {% if user.is_authenticated %}
+        {% if user.is_staff %}<a href="{% url 'dashboard' %}">Dashboard</a>{% endif %}
+        <a href="{% url 'my_bookings' %}">My Bookings</a>
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+      <a href="{% url 'book_tour' %}" class="mobile-cta">Book A Private Tour</a>
+    </div>
+
+    <!-- Flash Messages -->
+    {% if messages %}
+    <div class="flash-container" role="status" aria-live="polite">
+      {% for message in messages %}
+      <div class="flash-msg {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main id="main-content">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="luxe-footer" role="contentinfo">
+      <div class="footer-divider"></div>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:18px;">
+            <img src="{% static 'images/royalty_logo.png' %}" alt="Royalty Events" style="height:44px; width:auto; border-radius:6px;" />
+            <h2>ROYALTY<br>EVENTS</h2>
+          </div>
+          <p class="footer-desc">
+            Houston's architectural luxury venue for weddings, private celebrations, and high-profile corporate galas. Designed for the refined.
+          </p>
+        </div>
+        <div>
+          <div class="footer-section-title">Our Pages</div>
+          <ul class="footer-links">
+            <li><a href="{% url 'the_venue' %}">The Venue</a></li>
+            <li><a href="{% url 'weddings' %}">Weddings</a></li>
+            <li><a href="{% url 'celebrations' %}">Celebrations</a></li>
+            <li><a href="{% url 'gallery' %}">Gallery</a></li>
+            <li><a href="{% url 'event_list' %}">Events</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-section-title">Booking</div>
+          <ul class="footer-links">
+            <li><a href="{% url 'tour_venue' %}">Tour Our Venue</a></li>
+            <li><a href="{% url 'book_tour' %}">Book A Tour</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'my_bookings' %}">My Bookings</a></li>
+            {% else %}
+            <li><a href="{% url 'register' %}">Create Account</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        <div>
+          <div class="footer-section-title">Contact</div>
+          <div class="footer-contact-item"><i class="bi bi-envelope"></i>info@royaltyevents.com</div>
+          <div class="footer-contact-item"><i class="bi bi-telephone"></i>(713) 839-0560</div>
+          <div class="footer-contact-item"><i class="bi bi-geo-alt"></i>2575 S. Dairy Ashford Ste. N<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Houston, TX 77077</div>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <span>© 2026 Royalty Events. All rights reserved.</span>
+        <span style="color:#333;">Houston, Texas</span>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu toggle
+      const btn = document.getElementById('hamburgerBtn');
+      const menu = document.getElementById('mobileMenu');
+      btn.addEventListener('click', () => {
+        const isOpen = menu.classList.toggle('open');
+        btn.classList.toggle('open', isOpen);
+        btn.setAttribute('aria-expanded', isOpen);
+        menu.setAttribute('aria-hidden', !isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+      // Close menu on link click
+      menu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.remove('open');
+          btn.classList.remove('open');
+          btn.setAttribute('aria-expanded', false);
+          menu.setAttribute('aria-hidden', true);
+          document.body.style.overflow = '';
+        });
+      });
+      // Auto-dismiss flash messages
+      setTimeout(() => {
+        document.querySelectorAll('.flash-msg').forEach(el => {
+          el.style.transition = 'opacity 0.5s';
+          el.style.opacity = '0';
+          setTimeout(() => el.remove(), 500);
+        });
+      }, 5000);
+    </script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

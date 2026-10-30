@@ -1,0 +1,183 @@
+{% extends "events/base.html" %}
+{% load static %}
+{% block title %}Staff Dashboard — Royalty Events{% endblock %}
+
+{% block extra_head %}
+<style>
+  .dash-page { background: #080808; min-height: 80vh; padding: 50px 5%; }
+  .dash-header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+  .stat-card {
+    background: #0d0d0d; border: 1px solid #1a1a1a; padding: 24px;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: #2a2a2a; }
+  .stat-icon { font-size: 24px; margin-bottom: 12px; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 38px; color: #fff; line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 10px; color: #666; letter-spacing: 1.5px; text-transform: uppercase; }
+  .stat-card.highlight { border-color: rgba(201,169,97,0.3); }
+  .stat-card.highlight .stat-value { color: var(--gold); }
+  .dash-section { margin-bottom: 40px; }
+  .dash-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid #1a1a1a; }
+  .dash-section-title { font-family: 'Playfair Display', serif; font-size: 20px; color: #fff; }
+  .table-wrap { overflow-x: auto; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .data-table th { color: #555; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 12px 14px; text-align: left; border-bottom: 1px solid #1a1a1a; }
+  .data-table td { padding: 14px; border-bottom: 1px solid #111; color: #ccc; vertical-align: middle; }
+  .data-table tr:hover td { background: rgba(201,169,97,0.02); }
+  .status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+  .badge-new { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .badge-contacted { background: rgba(234,179,8,0.15); color: #facc15; }
+  .badge-scheduled { background: rgba(168,85,247,0.15); color: #c084fc; }
+  .badge-completed { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .badge-cancelled { background: rgba(239,68,68,0.15); color: #f87171; }
+  .dash-link { color: var(--gold); font-size: 11px; letter-spacing: 0.5px; }
+  .dash-link:hover { text-decoration: underline; }
+  .quick-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+  .qa-btn { padding: 12px 24px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; border: 1px solid #2a2a2a; color: #aaa; transition: all 0.2s; border-radius: 2px; }
+  .qa-btn:hover { border-color: var(--gold); color: var(--gold); }
+  @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 500px) { .stats-grid { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dash-page">
+  <div class="dash-header">
+    <div>
+      <div class="num-line"><div class="line"></div><span>STAFF</span></div>
+      <h1 class="section-heading">Dashboard</h1>
+    </div>
+    <div style="color:#666; font-size:12px; text-align:right;">
+      Logged in as <strong style="color:#ccc;">{{ user.username }}</strong>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <a href="{% url 'event_create' %}" class="qa-btn">+ New Event</a>
+    <a href="{% url 'staff_enquiries' %}" class="qa-btn">View All Enquiries</a>
+    <a href="{% url 'event_list' %}" class="qa-btn">View Public Events</a>
+    <a href="/admin/" class="qa-btn">Django Admin</a>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card {% if new_enquiries > 0 %}highlight{% endif %}">
+      <div class="stat-icon">📋</div>
+      <div class="stat-value">{{ new_enquiries }}</div>
+      <div class="stat-label">New Enquiries</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-value">{{ total_enquiries }}</div>
+      <div class="stat-label">Total Enquiries</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🎫</div>
+      <div class="stat-value">{{ upcoming_events }}</div>
+      <div class="stat-label">Upcoming Events</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🧾</div>
+      <div class="stat-value">{{ confirmed_bookings }}</div>
+      <div class="stat-label">Confirmed Bookings</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📅</div>
+      <div class="stat-value">{{ published_events }}</div>
+      <div class="stat-label">Published Events</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-value">{{ total_events }}</div>
+      <div class="stat-label">Total Events</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🧾</div>
+      <div class="stat-value">{{ total_bookings }}</div>
+      <div class="stat-label">Total Bookings</div>
+    </div>
+  </div>
+
+  <!-- Recent Enquiries -->
+  <div class="dash-section">
+    <div class="dash-section-header">
+      <div class="dash-section-title">Recent Tour Enquiries</div>
+      <a href="{% url 'staff_enquiries' %}" class="dash-link">View All →</a>
+    </div>
+    {% if recent_enquiries %}
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Name</th>
+            <th>Event Type</th>
+            <th>Desired Date</th>
+            <th>Status</th>
+            <th>Submitted</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for enquiry in recent_enquiries %}
+          <tr>
+            <td style="color:var(--gold); font-size:11px; letter-spacing:1px;">{{ enquiry.reference }}</td>
+            <td>{{ enquiry.full_name }}</td>
+            <td>{{ enquiry.event_type }}</td>
+            <td>{{ enquiry.event_date|date:"M j, Y" }}</td>
+            <td><span class="status-badge badge-{{ enquiry.status }}">{{ enquiry.get_status_display }}</span></td>
+            <td>{{ enquiry.submitted_at|date:"M j, Y" }}</td>
+            <td><a href="{% url 'enquiry_detail' enquiry.pk %}" class="dash-link">Manage</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p style="color:#555; font-size:13px; padding:20px 0;">No enquiries yet.</p>
+    {% endif %}
+  </div>
+
+  <!-- Recent Bookings -->
+  <div class="dash-section">
+    <div class="dash-section-header">
+      <div class="dash-section-title">Recent Event Bookings</div>
+      <a href="/admin/events/booking/" class="dash-link">View All →</a>
+    </div>
+    {% if recent_bookings %}
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Customer</th>
+            <th>Event</th>
+            <th>Seats</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Booked</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in recent_bookings %}
+          <tr>
+            <td style="color:var(--gold); font-size:11px; letter-spacing:1px;">{{ booking.reference }}</td>
+            <td>{{ booking.user.get_full_name|default:booking.user.username }}</td>
+            <td>{{ booking.event.title }}</td>
+            <td>{{ booking.seats }}</td>
+            <td>₹{{ booking.total_price|floatformat:0 }}</td>
+            <td><span class="status-badge badge-{{ booking.status }}">{{ booking.get_status_display }}</span></td>
+            <td>{{ booking.booked_at|date:"M j, Y" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p style="color:#555; font-size:13px; padding:20px 0;">No bookings yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

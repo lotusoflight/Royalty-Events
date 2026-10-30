@@ -1,0 +1,233 @@
+{% extends "events/base.html" %} {% load static %} {% block title %}{{
+event.title }} — Royalty Events{% endblock %} {% block extra_head %}
+<style>
+  .event-detail-page {
+    background: #080808;
+    min-height: 80vh;
+  }
+  .event-header-simple {
+    padding: 50px 5% 60px; /* 100px irunthathu - 50px aakiten da - MELA VARUM */
+    background: #0d0d0d;
+    border-bottom: 1px solid #1a1a1a;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .event-header-simple .category {
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .event-header-simple h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 52px;
+    font-weight: 400;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .event-body {
+    padding: 50px 5% 60px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 60px;
+    align-items: start;
+  }
+  .event-about-wrapper {
+    text-align: left;
+    margin-top: 20px;
+  }
+  .event-desc-heading {
+    font-family: "Playfair Display", serif;
+    font-size: 26px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .gold-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 12px 0 18px 0;
+  }
+  .event-description {
+    color: #bbb;
+    font-size: 14px;
+    line-height: 1.9;
+    max-width: 600px;
+  }
+
+  .event-sidebar {
+    position: sticky;
+    top: 84px;
+  }
+  .sidebar-card {
+    background: #0d0d0d;
+    border: 1px solid #1a1a1a;
+    padding: 30px;
+  }
+  .sidebar-section {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .sidebar-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .sidebar-meta-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    font-size: 12.5px;
+    color: #ccc;
+  }
+  .sidebar-meta-item i {
+    color: var(--gold);
+    font-size: 16px;
+    min-width: 18px;
+  }
+  .sidebar-meta-label {
+    font-size: 10px;
+    color: #666;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .price-big {
+    font-family: "Playfair Display", serif;
+    font-size: 36px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .price-label {
+    font-size: 10px;
+    color: #666;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .booking-submit {
+    width: 100%;
+    padding: 14px;
+    background: var(--gold-light);
+    color: #000;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .event-body {
+      grid-template-columns: 1fr;
+    }
+    .event-sidebar {
+      position: static;
+    }
+    .event-header-simple {
+      padding: 30px 5% 40px;
+    }
+    .event-header-simple h1 {
+      font-size: 32px;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="event-detail-page">
+  <div class="event-header-simple">
+    <div class="category">{{ event.category.name }}</div>
+    <h1>{{ event.title }}</h1>
+  </div>
+
+  <div class="event-body">
+    <div class="event-about-wrapper">
+      <h2 class="event-desc-heading">About This Event</h2>
+      <div class="gold-line"></div>
+      <div class="event-description">{{ event.description|linebreaks }}</div>
+    </div>
+
+    <aside class="event-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-section">
+          <div class="price-label">Price Per Seat</div>
+          <div class="price-big">₹{{ event.price|floatformat:0 }}</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-meta-item">
+            <i class="bi bi-calendar-event"></i>
+            <div>
+              <div class="sidebar-meta-label">Date</div>
+              {{ event.event_date|date:"l, F j, Y" }}
+            </div>
+          </div>
+          <div class="sidebar-meta-item">
+            <i class="bi bi-clock"></i>
+            <div>
+              <div class="sidebar-meta-label">Time</div>
+              {{ event.event_date|date:"g:i A" }} IST
+            </div>
+          </div>
+          <div class="sidebar-meta-item">
+            <i class="bi bi-geo-alt"></i>
+            <div>
+              <div class="sidebar-meta-label">Location</div>
+              {{ event.location }}
+            </div>
+          </div>
+        </div>
+        {% if event.is_upcoming %} {% if event.is_full %}
+        <div
+          style="
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            padding: 16px;
+            text-align: center;
+          "
+        >
+          Sold Out
+        </div>
+        {% elif user.is_authenticated %}
+        <form method="POST" action="{% url 'book_event' event.pk %}">
+          {% csrf_token %}
+          <div style="margin-bottom: 16px">
+            <label
+              style="
+                display: block;
+                font-size: 11px;
+                color: #888;
+                margin-bottom: 8px;
+              "
+              >Number of Seats</label
+            >{{ booking_form.seats }}
+          </div>
+          <button type="submit" class="booking-submit">Book Seats</button>
+        </form>
+        {% else %}
+        <div style="text-align: center; padding: 20px; color: #666">
+          <a
+            href="{% url 'login' %}?next={{ request.path }}"
+            style="color: var(--gold)"
+            >Login</a
+          >
+          to book
+        </div>
+        {% endif %} {% endif %}
+      </div>
+      <div style="margin-top: 16px; text-align: center">
+        <a href="{% url 'event_list' %}" style="color: #666; font-size: 11px"
+          >← Back to All Events</a
+        >
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}

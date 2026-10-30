@@ -1,0 +1,467 @@
+{% extends "events/base.html" %}
+<!--  -->
+{% load static %}
+<!--  -->
+{% block title %}CELEBRATIONS - ROYALTY EVENTS{% endblock %}
+<!--  -->
+{% block content %}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@300;400;500&display=swap");
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    background: #070707 !important;
+    color: #fff;
+  }
+  .cel-hero {
+    background: #070707;
+    padding: 50px 5% 60px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 50px;
+    align-items: center;
+    min-height: 80vh;
+  }
+  .cel-hero .crumb {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #777;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .cel-hero .crumb a {
+    color: #777;
+    text-decoration: none;
+  }
+  .cel-hero .crumb .active {
+    color: #c9a961;
+  }
+  .cel-hero h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 68px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: #fff;
+    line-height: 1;
+  }
+  .cel-hero .line {
+    width: 70px;
+    height: 1px;
+    background: #c9a961;
+    margin: 22px 0;
+  }
+  .cel-hero p {
+    color: #aaa;
+    font-size: 13.5px;
+    line-height: 1.7;
+    max-width: 460px;
+  }
+  .cel-hero-img {
+    position: relative;
+    height: 520px;
+    border: 1px solid #c9a961;
+    padding: 6px;
+  }
+  .cel-hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .cel-grid {
+    background: #070707;
+    padding: 20px 3% 60px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  .cel-card {
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    overflow: hidden;
+  }
+  .cel-card img {
+    width: 100%;
+    height: 340px;
+    object-fit: cover;
+    display: block;
+  }
+  .cel-card.small img {
+    height: 300px;
+  }
+  .cel-card-body {
+    padding: 20px 18px 26px;
+  }
+  .cel-card-body h3 {
+    font-family: "Playfair Display", serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #fff;
+    font-weight: 400;
+  }
+  .cel-card-body p {
+    margin-top: 12px;
+    color: #999;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+
+  .eng-section {
+    background: #070707;
+    padding: 80px 3% 30px;
+    text-align: center;
+  }
+  .eng-section .small {
+    color: #c9a961;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    font-weight: 600;
+  }
+  .eng-section h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-top: 14px;
+    color: #fff;
+  }
+  .eng-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 50px;
+    text-align: center;
+  }
+  .eng-box {
+    border: 1px solid #1a1a1a;
+    background: #0a0a0a;
+    padding: 28px 16px;
+  }
+  .eng-box b {
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+    color: #fff;
+    display: block;
+    font-weight: 400;
+  }
+  .eng-box .title {
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+  .eng-box .desc {
+    color: #777;
+    font-size: 11px;
+    line-height: 1.5;
+    margin-top: 6px;
+  }
+
+  .cel-packages {
+    background: #070707;
+    padding: 40px 3% 80px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .pack-card {
+    border: 1px solid #222;
+    padding: 28px 22px;
+    background: linear-gradient(180deg, #0f0f0f, #070707);
+  }
+  .pack-card .top-small {
+    color: #c9a961;
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+  .pack-card h3 {
+    font-family: "Playfair Display", serif;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 400;
+    margin-top: 12px;
+    letter-spacing: 1px;
+  }
+  .pack-card .desc {
+    color: #999;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+  .pack-card .info {
+    color: #bbb;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-top: 16px;
+    font-weight: 600;
+  }
+  .pack-prices {
+    display: flex;
+    gap: 18px;
+    margin-top: 20px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 18px;
+  }
+  .pack-prices .price b {
+    color: #e8d5a3;
+    font-size: 26px;
+    font-family: "Playfair Display", serif;
+    font-weight: 500;
+    display: block;
+  }
+  .pack-prices .price small {
+    color: #888;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+  .pack-list {
+    margin-top: 16px;
+    list-style: none;
+    padding: 0;
+  }
+  .pack-list li {
+    color: #aaa;
+    font-size: 11px;
+    line-height: 1.9;
+    display: flex;
+    gap: 8px;
+  }
+  .pack-list li::before {
+    content: "✓";
+    color: #c9a961;
+  }
+  .btn-gold-pack {
+    margin-top: 20px;
+    display: inline-block;
+    border: 1px solid #c9a961;
+    color: #c9a961;
+    padding: 10px 20px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+  }
+  .btn-gold-pack:hover {
+    background: #c9a961;
+    color: #000;
+  }
+
+  @media (max-width: 900px) {
+    .cel-hero {
+      grid-template-columns: 1fr;
+    }
+    .cel-grid {
+      grid-template-columns: 1fr;
+    }
+    .eng-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .cel-packages {
+      grid-template-columns: 1fr;
+    }
+    .cel-hero h1 {
+      font-size: 40px;
+    }
+  }
+</style>
+
+<div class="cel-hero">
+  <div>
+    <div class="crumb">
+      <a href="{% url 'home' %}">Home</a><span>|</span
+      ><span class="active">CELEBRATIONS</span>
+    </div>
+    <h1>CELEBRATIONS</h1>
+    <div class="line"></div>
+    <p>
+      From milestone birthdays and luxury baby showers to high-profile corporate
+      galas, LuxeSpace sets the ultimate standard.
+    </p>
+  </div>
+  <div class="cel-hero-img">
+    <img
+      src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=900"
+      alt="Celebrations"
+    />
+  </div>
+</div>
+
+<div class="cel-grid">
+  <div class="cel-card small">
+    <img
+      src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600"
+      alt="Birthdays"
+    />
+    <div class="cel-card-body">
+      <h3>BIRTHDAYS</h3>
+      <p>
+        Milestone birthday celebrations with custom lighting & lounge setups.
+      </p>
+    </div>
+  </div>
+  <div class="cel-card">
+    <img
+      src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=700"
+      style="height: 480px"
+      alt="Baby Showers"
+    />
+    <div class="cel-card-body">
+      <h3>BABY SHOWERS</h3>
+      <p>Elegant, warm gatherings tailored for welcoming new life in style.</p>
+    </div>
+  </div>
+  <div class="cel-card small">
+    <img
+      src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=600"
+      alt="Milestones"
+    />
+    <div class="cel-card-body">
+      <h3>MILESTONES</h3>
+      <p>
+        Anniversaries, engagements, and private family dinners crafted with
+        care.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="eng-section">
+  <div class="small">VENUE SPECIFICATIONS</div>
+  <h2>ENGINEERED FOR PERFECT EVENTS</h2>
+  <div class="eng-grid">
+    <div class="eng-box">
+      <b>150</b>
+      <div class="title">MAX GUEST CAPACITY</div>
+      <div class="desc">Cocktail Reception Style</div>
+    </div>
+    <div class="eng-box">
+      <b>150</b>
+      <div class="title">SEATED BANQUET</div>
+      <div class="desc">Round and Rectangle Tables & Dance Floor</div>
+    </div>
+    <div class="eng-box">
+      <b>2,400 Ft</b>
+      <div class="title">SQ. FT. SPACE</div>
+      <div class="desc">Grand Hall + Catering Area + Bridal Suite</div>
+    </div>
+    <div class="eng-box">
+      <b>4 Restrooms</b>
+      <div class="title"></div>
+      <div class="desc">2 Men + 2 Women ADA approved restrooms</div>
+    </div>
+  </div>
+</div>
+
+<div class="cel-packages">
+  <div class="pack-card">
+    <div class="top-small">FULL-SERVICE CELEBRATION</div>
+    <h3>THE EXPERIENCE</h3>
+    <p class="desc">
+      Our most complete celebration experience — thoughtfully styled, fully set,
+      and designed so you can simply arrive and celebrate.
+    </p>
+    <div class="info">8 HOURS · ACCOMMODATES UP TO 150 GUESTS</div>
+    <div class="desc" style="color: #777">
+      Package pricing includes 75 guests.<br />Guests 76-150 · $35 per
+      additional guest
+    </div>
+    <div class="pack-prices">
+      <div class="price">
+        <small>FRIDAY + SUNDAY</small><b>$5,500</b><small>/ 8 Hours</small>
+      </div>
+      <div class="price">
+        <small>SATURDAY</small><b>$5,950</b><small>/ 8 Hours</small>
+      </div>
+    </div>
+    <ul class="pack-list">
+      <li>Includes eligible pieces from Luxespace Décor Collection</li>
+      <li>Two Signature Backdrops</li>
+      <li>Fully Styled Tables & Centerpieces</li>
+      <li>Charger Plates & Dinnerware</li>
+      <li>Candles & Tablescape Styling</li>
+      <li>Venue Uplighting</li>
+      <li>On-Site Venue Representative</li>
+      <li>Venue Setup</li>
+      <li>Post-Event Venue Cleaning</li>
+      <li>Tables & Chairs</li>
+    </ul>
+    <a href="{% url 'event_create' %}" class="btn-gold-pack"
+      >BOOK THIS PACKAGE</a
+    >
+  </div>
+
+  <div class="pack-card">
+    <div class="top-small">CURATED CELEBRATION</div>
+    <h3>THE ELEVATED ESSENTIALS</h3>
+    <p class="desc">
+      A refined celebration with the essentials in place and a curated touch of
+      Luxespace styling.
+    </p>
+    <div class="info">6 HOURS · ACCOMMODATES UP TO 150 GUESTS</div>
+    <div class="desc" style="color: #777">
+      Package pricing includes 75 guests.<br />Guests 76-150 · $30 per
+      additional guest
+    </div>
+    <div class="pack-prices">
+      <div class="price">
+        <small>FRIDAY + SAUNDAY</small><b>$3,500</b><small>/ 6 Hours</small>
+      </div>
+      <div class="price">
+        <small>SATURDAY</small><b>$3,950</b><small>/ 6 Hours</small>
+      </div>
+    </div>
+    <ul class="pack-list">
+      <li>Choose 3 eligible items from the Luxespace Décor collection</li>
+      <li>Access to the Luxespace Décor Collection</li>
+      <li>Décor Placement & Setup</li>
+      <li>Traditional Mirrored Tabletops</li>
+      <li>Venue Uplighting</li>
+      <li>On-Site Venue Representative</li>
+      <li>Venue Setup</li>
+      <li>Post-Event Venue Cleaning</li>
+      <li>Tables & Chairs</li>
+    </ul>
+    <a href="{% url 'event_create' %}" class="btn-gold-pack"
+      >BOOK THIS PACKAGE</a
+    >
+  </div>
+
+  <div class="pack-card">
+    <div class="top-small">VENUE ESSENTIALS</div>
+    <h3>THE BLANK CANVAS</h3>
+    <p class="desc">
+      A beautifully prepared space with the essential elements in place, ready
+      to bring your own vision to life.
+    </p>
+    <div class="info">6 HOURS · ACCOMMODATES UP TO 150 GUESTS</div>
+    <div class="desc" style="color: #777">
+      Package pricing includes 75 guests.<br />Guests 76-150 · $25 per
+      additional guest
+    </div>
+    <div class="pack-prices">
+      <div class="price">
+        <small>FRIDAY + SUNDAY</small><b>$2,750</b><small>/ 6 Hours</small>
+      </div>
+      <div class="price">
+        <small>SATURDAY</small><b>$3,150</b><small>/ 6 Hours</small>
+      </div>
+    </div>
+    <ul class="pack-list">
+      <li>Venue Uplighting</li>
+      <li>On-Site Venue Representative</li>
+      <li>Venue Setup</li>
+      <li>Post-Event Venue Cleaning</li>
+      <li>Tables & Chairs</li>
+    </ul>
+    <a href="{% url 'event_create' %}" class="btn-gold-pack"
+      >BOOK THIS PACKAGE</a
+    >
+  </div>
+</div>
+{% endblock %}

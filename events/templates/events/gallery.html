@@ -1,0 +1,284 @@
+{% extends "events/base.html" %}
+<!--  -->
+{% load static %}
+<!--  -->
+{% block title %}GALLERY - ROYALTY EVENTS{% endblock %}
+<!--  -->
+{% block content %}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400&family=Inter:wght@300;400&display=swap");
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    background: #070707 !important;
+  }
+
+  .gal-hero {
+    background: #070707;
+    padding: 50px 5% 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    min-height: 60vh;
+    align-items: center;
+    position: relative;
+  }
+  .gal-hero::before {
+    content: "";
+    position: absolute;
+    left: 5%;
+    top: 30px;
+    width: 40px;
+    height: 40px;
+    border-left: 1px solid #c9a961;
+    border-top: 1px solid #c9a961;
+  }
+  .crumb {
+    font-size: 11px;
+    color: #777;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .crumb a {
+    color: #777;
+    text-decoration: none;
+  }
+  .crumb .active {
+    color: #c9a961;
+  }
+  .gal-hero h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 56px;
+    color: #fff;
+    font-weight: 300;
+    letter-spacing: 2px;
+  }
+  .gal-hero p {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-top: 16px;
+    max-width: 380px;
+  }
+  .gal-hero-img {
+    position: relative;
+    height: 420px;
+    border: 1px solid #c9a961;
+    padding: 6px;
+  }
+  .gal-hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gal-title {
+    text-align: center;
+    background: #070707;
+    padding: 20px 0 0;
+  }
+  .gal-title h2 {
+    color: #fff;
+    font-family: "Playfair Display", serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    font-weight: 400;
+  }
+
+  .gal-grid {
+    background: #070707;
+    padding: 30px 3% 80px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .gal-item {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #1a1a1a;
+    height: 320px;
+    background: #111;
+  }
+  .gal-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.4s;
+  }
+  .gal-item:hover img {
+    transform: scale(1.05);
+  }
+  .gal-item .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), transparent);
+    opacity: 0;
+    transition: 0.3s;
+    display: flex;
+    align-items: end;
+    padding: 16px;
+  }
+  .gal-item:hover .overlay {
+    opacity: 1;
+  }
+  .gal-item .overlay span {
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    .gal-hero {
+      grid-template-columns: 1fr;
+    }
+    .gal-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .gal-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="gal-hero">
+  <div>
+    <div class="crumb">
+      <a href="{% url 'home' %}">Home</a><span>|</span
+      ><span class="active">GALLERY</span>
+    </div>
+    <h1>GALLERY</h1>
+    <p>
+      An image-focused showcase inspired by Edition & Rosewood luxury aesthetic.
+    </p>
+  </div>
+  <div class="gal-hero-img">
+    <img
+      src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=900"
+      alt="Gallery Hero"
+    />
+  </div>
+</div>
+
+<div class="gal-title"><h2>PHOTOS OF LUXESPACE HTX</h2></div>
+
+<div class="gal-grid">
+  <!-- 1-3 -->
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
+      alt="Luxury Dining"
+    />
+    <div class="overlay"><span>LUXURY DINING</span></div>
+  </div>
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600"
+      alt="Floral Decor"
+    />
+    <div class="overlay"><span>FLORAL DECOR</span></div>
+  </div>
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600"
+      alt="Celebration"
+    />
+    <div class="overlay"><span>CELEBRATION</span></div>
+  </div>
+
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600"
+      alt="Grand Hall"
+    />
+    <div class="overlay"><span>GRAND HALL</span></div>
+  </div>
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600"
+      alt="Baby Shower"
+    />
+    <div class="overlay"><span>BABY SHOWER</span></div>
+  </div>
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600"
+      alt="Wedding Decor"
+    />
+    <div class="overlay"><span>WEDDING DECOR</span></div>
+  </div>
+
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600"
+      alt="Arch Design"
+    />
+    <div class="overlay"><span>ARCH DESIGN</span></div>
+  </div>
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600"
+      alt="Wedding Ceremony"
+    />
+    <div class="overlay"><span>WEDDING CEREMONY</span></div>
+  </div>
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600"
+      alt="Reception"
+    />
+    <div class="overlay"><span>RECEPTION</span></div>
+  </div>
+
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1555244162-803834f70033?w=600"
+      alt="Tablescape"
+    />
+    <div class="overlay"><span>TABLESCAPE</span></div>
+  </div>
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=600"
+      alt="Intimate Dinner"
+    />
+    <div class="overlay"><span>INTIMATE DINNER</span></div>
+  </div>
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600"
+      alt="Party Setup"
+    />
+    <div class="overlay"><span>PARTY SETUP</span></div>
+  </div>
+
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600"
+      alt="Ambient Lighting"
+    />
+    <div class="overlay"><span>AMBIENT LIGHTING</span></div>
+  </div>
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=600"
+      alt="Corporate Event"
+    />
+    <div class="overlay"><span>CORPORATE EVENT</span></div>
+  </div>
+  <div class="gal-item">
+    <img
+      src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600"
+      alt="Bridal Suite"
+    />
+    <div class="overlay"><span>BRIDAL SUITE</span></div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,433 @@
+{% extends "events/base.html" %}
+{% load static %}
+
+{% block title %}Book A Private Tour — Royalty Events{% endblock %}
+{% block meta_description %}Schedule your private venue tour at Royalty Events Houston. Fill in your details and we will contact you within 1-2 business days.{% endblock %}
+
+{% block extra_head %}
+<style>
+  body { background: #0a0a0f !important; }
+
+  .book-tour-page {
+    background: #0a0a0f;
+    min-height: 100vh;
+    padding: 60px 0 100px;
+  }
+
+  /* Header */
+  .bt-header {
+    text-align: center;
+    padding: 0 5% 50px;
+    border-bottom: 1px solid #1a1a1a;
+    margin-bottom: 60px;
+  }
+  .bt-logo-block {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .bt-logo-bg {
+    width: 120px;
+    height: 120px;
+    background: #0d1b2a;
+    border: 1px solid #1a2a3a;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .bt-logo-bg img { height: 90px; width: auto; object-fit: contain; }
+  .bt-brand-name {
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    letter-spacing: 4px;
+  }
+  .bt-contact-line { color: #888; font-size: 11px; line-height: 1.8; }
+
+  /* Form container */
+  .bt-form-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 5%;
+  }
+  .bt-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 300;
+    margin: 40px 0 28px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  /* Form fields */
+  .bt-field { margin-bottom: 28px; }
+  .bt-label {
+    display: block;
+    color: #fff;
+    font-size: 12.5px;
+    margin-bottom: 10px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+  .bt-label .req { color: var(--gold); font-size: 10px; margin-left: 4px; }
+  .bt-label .hint { color: #777; font-size: 11px; display: block; margin-top: 3px; font-style: italic; }
+  .luxe-form-input {
+    width: 100%;
+    background: #fff;
+    border: none;
+    padding: 13px 16px;
+    color: #111;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    border-radius: 2px;
+    outline: none;
+    transition: box-shadow 0.2s;
+  }
+  .luxe-form-input:focus { box-shadow: 0 0 0 2px var(--gold); }
+  textarea.luxe-form-input { height: 130px; resize: vertical; }
+  select.luxe-form-input { cursor: pointer; }
+
+  /* Radio / checkbox groups */
+  .bt-radio-group { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+  .bt-radio-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ddd;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 10px 14px;
+    border: 1px solid #1e1e1e;
+    border-radius: 2px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .bt-radio-item:hover { border-color: var(--gold); background: rgba(201,169,97,0.04); }
+  .bt-radio-item input[type="radio"],
+  .bt-radio-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--gold);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .bt-radio-item input:checked + span { color: var(--gold); }
+
+  /* Note box */
+  .bt-note {
+    background: #0d1a2a;
+    border: 1px solid #1a2a3a;
+    border-left: 3px solid var(--gold);
+    padding: 16px 20px;
+    margin: 8px 0 20px;
+    color: #bbb;
+    font-size: 12px;
+    line-height: 1.7;
+    border-radius: 0 2px 2px 0;
+  }
+  .bt-note strong { color: #fff; display: block; margin-bottom: 4px; font-size: 12.5px; letter-spacing: 0.5px; }
+
+  /* Errors */
+  .bt-field-error { color: #ff6b6b; font-size: 11px; margin-top: 6px; }
+  .has-error .luxe-form-input { box-shadow: 0 0 0 1px #c0392b; }
+  .non-field-errors {
+    background: rgba(192, 57, 43, 0.15);
+    border: 1px solid #c0392b;
+    padding: 14px 18px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+    color: #ff8888;
+    font-size: 12px;
+  }
+
+  /* Consent */
+  .bt-consent {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 24px;
+    background: #0d0d12;
+    border: 1px solid #1a1a1a;
+    border-radius: 2px;
+    margin-top: 40px;
+  }
+  .bt-consent input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--gold); flex-shrink: 0; margin-top: 2px; cursor: pointer; }
+  .bt-consent label { color: #ccc; font-size: 11.5px; line-height: 1.7; font-weight: 300; cursor: pointer; }
+  .bt-consent .brand-name { color: #fff; font-weight: 600; letter-spacing: 1px; }
+
+  /* Privacy note */
+  .bt-privacy { color: #555; font-size: 10.5px; line-height: 1.7; margin-top: 20px; font-weight: 300; }
+  .bt-privacy a { color: #777; text-decoration: underline; }
+
+  /* Submit */
+  .bt-submit-row { margin-top: 36px; display: flex; justify-content: flex-end; padding-bottom: 20px; gap: 16px; align-items: center; }
+  .bt-submit-btn {
+    background: var(--gold-light);
+    color: #000;
+    padding: 14px 40px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .bt-submit-btn:hover { background: var(--gold); }
+  .bt-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .bt-back-link { color: #666; font-size: 11px; letter-spacing: 0.5px; }
+  .bt-back-link:hover { color: var(--gold); }
+
+  @media (max-width: 600px) {
+    .bt-submit-row { flex-direction: column; align-items: stretch; }
+    .bt-submit-btn { text-align: center; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="book-tour-page">
+  <div class="bt-header">
+    <div class="bt-logo-block">
+      <div class="bt-logo-bg">
+        <img src="{% static 'images/royalty.png' %}" alt="Royalty Events logo" />
+      </div>
+      <div class="bt-brand-name">ROYALTY EVENTS</div>
+    </div>
+    <h1 class="section-heading" style="font-size:28px; margin-bottom:12px;">Book A Private Venue Tour</h1>
+    <p class="bt-contact-line">
+      Royalty Events &nbsp;|&nbsp; (713) 839-0560 &nbsp;|&nbsp; info@royaltyevents.com<br>
+      2575 S. Dairy Ashford Ste. N, Houston, TX 77077
+    </p>
+  </div>
+
+  <div class="bt-form-wrap">
+
+    {% if form.non_field_errors %}
+    <div class="non-field-errors" role="alert">
+      {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" id="tourForm" novalidate>
+      {% csrf_token %}
+
+      <div class="bt-section-title">Tell Us About Your Celebration</div>
+
+      <!-- Full Name -->
+      <div class="bt-field {% if form.full_name.errors %}has-error{% endif %}">
+        <label class="bt-label" for="{{ form.full_name.id_for_label }}">Full Name <span class="req">*</span></label>
+        <input class="luxe-form-input" type="text" name="full_name" id="{{ form.full_name.id_for_label }}"
+               value="{{ form.full_name.value|default:'' }}" placeholder="Your full name" required>
+        {% for error in form.full_name.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+      </div>
+
+      <!-- Email -->
+      <div class="bt-field {% if form.email.errors %}has-error{% endif %}">
+        <label class="bt-label" for="{{ form.email.id_for_label }}">Email Address <span class="req">*</span></label>
+        <input class="luxe-form-input" type="email" name="email" id="{{ form.email.id_for_label }}"
+               value="{{ form.email.value|default:'' }}" placeholder="your@email.com" required>
+        {% for error in form.email.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+      </div>
+
+      <!-- Phone -->
+      <div class="bt-field {% if form.phone.errors %}has-error{% endif %}">
+        <label class="bt-label" for="{{ form.phone.id_for_label }}">Phone Number <span class="req">*</span></label>
+        <input class="luxe-form-input" type="tel" name="phone" id="{{ form.phone.id_for_label }}"
+               value="{{ form.phone.value|default:'' }}" placeholder="(555) 000-0000" required>
+        {% for error in form.phone.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+      </div>
+
+      <div class="bt-section-title">Your Event</div>
+
+      <!-- Event Type -->
+      <div class="bt-field {% if form.event_type.errors %}has-error{% endif %}">
+        <label class="bt-label">What type of event are you planning? <span class="req">*</span>
+          <span class="hint">Choose one option</span>
+        </label>
+        <div class="bt-radio-group">
+          {% for value, label in form.fields.event_type.choices %}
+          {% if value %}
+          <label class="bt-radio-item">
+            <input type="radio" name="event_type" value="{{ value }}"
+              {% if form.event_type.value == value %}checked{% endif %} required>
+            <span>{{ label }}</span>
+          </label>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% for error in form.event_type.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+      </div>
+
+      <!-- Setup Works -->
+      <div class="bt-note">
+        <strong>Ceremony + Reception Setup</strong>
+        Royalty Events features one main event space. If hosting both your ceremony and reception with us, they will take place in the same room using one shared layout.
+      </div>
+      <div class="bt-field {% if form.setup_works.errors %}has-error{% endif %}">
+        <label class="bt-label">Does this setup work for your celebration?
+          <span class="hint">Choose one option</span>
+        </label>
+        <div class="bt-radio-group">
+          <label class="bt-radio-item"><input type="radio" name="setup_works" value="Yes" {% if form.setup_works.value == "Yes" %}checked{% endif %}><span>Yes, this works for us</span></label>
+          <label class="bt-radio-item"><input type="radio" name="setup_works" value="Reception only" {% if form.setup_works.value == "Reception only" %}checked{% endif %}><span>We are hosting the reception only</span></label>
+          <label class="bt-radio-item"><input type="radio" name="setup_works" value="No" {% if form.setup_works.value == "No" %}checked{% endif %}><span>No, we require separate spaces</span></label>
+        </div>
+      </div>
+
+      <!-- Event Date -->
+      <div class="bt-field {% if form.event_date.errors %}has-error{% endif %}">
+        <label class="bt-label" for="{{ form.event_date.id_for_label }}">Desired Event Date <span class="req">*</span></label>
+        <input class="luxe-form-input" type="date" name="event_date" id="{{ form.event_date.id_for_label }}"
+               value="{{ form.event_date.value|default:'' }}" required>
+        {% for error in form.event_date.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+      </div>
+
+      <!-- Date Flexible -->
+      <div class="bt-field">
+        <label class="bt-label">Is your date flexible?
+          <span class="hint">Choose one option</span>
+        </label>
+        <div class="bt-radio-group">
+          <label class="bt-radio-item"><input type="radio" name="date_flexible" value="True" {% if form.date_flexible.value == True or form.date_flexible.value == "True" %}checked{% endif %}><span>Yes</span></label>
+          <label class="bt-radio-item"><input type="radio" name="date_flexible" value="False" {% if form.date_flexible.value == False or form.date_flexible.value == "False" or not form.date_flexible.value %}checked{% endif %}><span>No</span></label>
+        </div>
+      </div>
+
+      <!-- Guest Count -->
+      <div class="bt-field {% if form.guest_count.errors %}has-error{% endif %}">
+        <label class="bt-label" for="{{ form.guest_count.id_for_label }}">Estimated Guest Count <span class="req">*</span>
+          <span class="hint">Our venue accommodates up to 150 guests</span>
+        </label>
+        <input class="luxe-form-input" type="number" name="guest_count" id="{{ form.guest_count.id_for_label }}"
+               value="{{ form.guest_count.value|default:'' }}" min="1" max="500" placeholder="e.g. 80" required>
+        {% for error in form.guest_count.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+      </div>
+
+      <div class="bt-section-title">Your Preferences</div>
+
+      <!-- Experience -->
+      <div class="bt-field {% if form.experience.errors %}has-error{% endif %}">
+        <label class="bt-label">Which experience are you interested in?
+          <span class="hint">Choose one option</span>
+        </label>
+        <div class="bt-radio-group">
+          {% for value, label in form.fields.experience.choices %}
+          {% if value %}
+          <label class="bt-radio-item">
+            <input type="radio" name="experience" value="{{ value }}"
+              {% if form.experience.value == value %}checked{% endif %}>
+            <span>{{ label }}</span>
+          </label>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% for error in form.experience.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+      </div>
+
+      <!-- Investment Range -->
+      <div class="bt-field {% if form.investment_range.errors %}has-error{% endif %}">
+        <label class="bt-label">What investment range have you planned?
+          <span class="hint">Choose one option</span>
+        </label>
+        <div class="bt-radio-group">
+          {% for value, label in form.fields.investment_range.choices %}
+          {% if value %}
+          <label class="bt-radio-item">
+            <input type="radio" name="investment_range" value="{{ value }}"
+              {% if form.investment_range.value == value %}checked{% endif %}>
+            <span>{{ label }}</span>
+          </label>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% for error in form.investment_range.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+      </div>
+
+      <!-- Vision -->
+      <div class="bt-field {% if form.vision.errors %}has-error{% endif %}">
+        <label class="bt-label" for="{{ form.vision.id_for_label }}">Tell Us About Your Vision
+          <span class="hint">Share your desired style, colour palette, atmosphere…</span>
+        </label>
+        <textarea class="luxe-form-input" name="vision" id="{{ form.vision.id_for_label }}" placeholder="Describe your dream event…">{{ form.vision.value|default:'' }}</textarea>
+        {% for error in form.vision.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+      </div>
+
+      <!-- How Did You Hear -->
+      <div class="bt-field {% if form.hear_about.errors %}has-error{% endif %}">
+        <label class="bt-label">How did you hear about Royalty Events?
+          <span class="hint">Choose one option</span>
+        </label>
+        <div class="bt-radio-group">
+          {% for value, label in form.fields.hear_about.choices %}
+          {% if value %}
+          <label class="bt-radio-item">
+            <input type="radio" name="hear_about" value="{{ value }}"
+              {% if form.hear_about.value == value %}checked{% endif %}>
+            <span>{{ label }}</span>
+          </label>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% for error in form.hear_about.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+      </div>
+
+      <!-- Ready For Tour -->
+      <div class="bt-field">
+        <label class="bt-label">Are you ready to schedule a private venue tour?
+          <span class="hint">Choose one option</span>
+        </label>
+        <div class="bt-radio-group">
+          <label class="bt-radio-item"><input type="radio" name="ready_for_tour" value="Yes" {% if form.ready_for_tour.value == "Yes" %}checked{% endif %}><span>Yes</span></label>
+          <label class="bt-radio-item"><input type="radio" name="ready_for_tour" value="More info" {% if form.ready_for_tour.value == "More info" %}checked{% endif %}><span>I'd like more information first</span></label>
+        </div>
+      </div>
+
+      <!-- Tour Date/Time (optional) -->
+      <div class="bt-field">
+        <label class="bt-label" for="{{ form.tour_datetime.id_for_label }}">Preferred Tour Date &amp; Time
+          <span class="hint">Optional — we'll contact you to confirm availability</span>
+        </label>
+        <input class="luxe-form-input" type="text" name="tour_datetime" id="{{ form.tour_datetime.id_for_label }}"
+               value="{{ form.tour_datetime.value|default:'' }}" placeholder="e.g. Saturday mornings, weekday afternoons…">
+      </div>
+
+      <!-- SMS Consent -->
+      <div class="bt-consent">
+        <input type="checkbox" name="sms_consent" id="sms_consent" {% if form.sms_consent.value %}checked{% endif %}>
+        <label for="sms_consent">
+          I agree to receive text messages from <span class="brand-name">Royalty Events</span>. These messages may include notifications or responses to your enquiry. Message and data rates may apply. Reply OPT OUT at any time to unsubscribe.
+        </label>
+      </div>
+      {% for error in form.sms_consent.errors %}<div class="bt-field-error">{{ error }}</div>{% endfor %}
+
+      <div class="bt-privacy">
+        Your information is kept private and will only be used to respond to your enquiry. See our <a href="#">Privacy Policy</a>.
+      </div>
+
+      <div class="bt-submit-row">
+        <a href="{% url 'home' %}" class="bt-back-link">← Back to Home</a>
+        <button type="submit" class="bt-submit-btn" id="submitBtn">
+          Submit Enquiry
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Prevent double-submit
+  document.getElementById('tourForm').addEventListener('submit', function() {
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+  });
+</script>
+{% endblock %}

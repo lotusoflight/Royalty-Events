@@ -1,0 +1,664 @@
+{% extends "events/base.html" %}
+<!--  -->
+{% load static %}
+<!--  -->
+{% block title %}Weddings & Receptions — Royalty Events{% endblock %}
+<!--  -->
+{% block content %}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap");
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    background: #fff !important;
+  }
+
+  .wed-hero {
+    position: relative;
+    width: 100%;
+    height: 92vh;
+    min-height: 650px;
+    background: #f5f3f0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .wed-hero-img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 58%;
+    height: 100%;
+  }
+  .wed-hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .wed-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      #f5f3f0 0%,
+      #f5f3f0 35%,
+      rgba(245, 243, 240, 0.9) 50%,
+      rgba(245, 243, 240, 0.2) 100%
+    );
+  }
+  .wed-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 6%;
+    max-width: 560px;
+  }
+  .wed-hero-content .small {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #222;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .wed-hero-content .small::after {
+    content: "";
+    width: 40px;
+    height: 1px;
+    background: #222;
+    display: inline-block;
+  }
+  .wed-hero-content h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 56px;
+    font-weight: 400;
+    color: #1a1a1a;
+    line-height: 1.1;
+    letter-spacing: 1px;
+  }
+  .wed-hero-content p {
+    margin-top: 18px;
+    color: #555;
+    font-size: 13.5px;
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 440px;
+  }
+  .btn-black {
+    margin-top: 26px;
+    display: inline-block;
+    border: 1px solid #1a1a1a;
+    padding: 12px 26px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #1a1a1a;
+    text-decoration: none;
+    background: transparent;
+    transition: 0.3s;
+  }
+  .btn-black:hover {
+    background: #1a1a1a;
+    color: #fff;
+  }
+
+  .wed-section2 {
+    background: #f8f6f3;
+    padding: 80px 5% 60px;
+    text-align: center;
+  }
+  .wed-sec-num {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .wed-sec-num::before {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: #888;
+    display: inline-block;
+  }
+  .wed-section2 .sub {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #222;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+  .wed-section2 h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 44px;
+    font-weight: 400;
+    color: #1a1a1a;
+    line-height: 1.15;
+    margin-top: 16px;
+    letter-spacing: 1px;
+  }
+  .wed-section2 .desc {
+    max-width: 520px;
+    margin: 18px auto 0;
+    color: #666;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .wed-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 50px;
+    text-align: left;
+  }
+  .wed-card {
+    background: #fff;
+    border: 1px solid #eee;
+    overflow: hidden;
+  }
+  .wed-card img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+  }
+  .wed-card-body {
+    padding: 22px 18px 26px;
+  }
+  .wed-card-body h3 {
+    font-family: "Playfair Display", serif;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: #1a1a1a;
+    font-weight: 500;
+  }
+  .wed-card-body p {
+    margin-top: 10px;
+    color: #666;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+
+  .wed-full {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    background: #000;
+    overflow: hidden;
+  }
+  .wed-full img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wed-full h2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family: "Playfair Display", serif;
+    font-size: 52px;
+    letter-spacing: 8px;
+    font-weight: 300;
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .wed-ceremony {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: #f8f6f3;
+    min-height: 80vh;
+  }
+  .wed-cer-left {
+    padding: 80px 6% 80px 8%;
+  }
+  .wed-cer-left .num {
+    font-size: 12px;
+    color: #999;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .wed-cer-left .num::before {
+    content: "";
+    width: 30px;
+    height: 1px;
+    background: #999;
+    display: inline-block;
+  }
+  .wed-cer-left h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 42px;
+    font-weight: 400;
+    color: #1a1a1a;
+    margin-top: 14px;
+    line-height: 1.1;
+  }
+  .wed-cer-left .line {
+    width: 60px;
+    height: 1px;
+    background: #1a1a1a;
+    margin: 18px 0;
+  }
+  .wed-cer-left .intro {
+    color: #555;
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 460px;
+  }
+  .wed-cer-item {
+    display: flex;
+    gap: 18px;
+    margin-top: 32px;
+  }
+  .wed-cer-item .no {
+    font-size: 12px;
+    color: #999;
+    min-width: 50px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .wed-cer-item .no::after {
+    content: "";
+    width: 40px;
+    height: 1px;
+    background: #bbb;
+    display: inline-block;
+  }
+  .wed-cer-item h4 {
+    font-family: "Playfair Display", serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1a1a1a;
+    letter-spacing: 0.5px;
+  }
+  .wed-cer-item p {
+    margin-top: 6px;
+    color: #666;
+    font-size: 12.5px;
+    line-height: 1.6;
+    max-width: 380px;
+  }
+  .wed-cer-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .wed-cer-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .wed-packages {
+    background: #070707;
+    padding: 80px 3%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .pack-card {
+    border: 1px solid #222;
+    padding: 32px 26px;
+    background: linear-gradient(180deg, #0f0f0f, #070707);
+  }
+  .pack-card .top-small {
+    color: #c9a961;
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+  .pack-card h3 {
+    font-family: "Playfair Display", serif;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-top: 14px;
+    letter-spacing: 1px;
+  }
+  .pack-card .pack-desc {
+    color: #999;
+    font-size: 12.5px;
+    line-height: 1.6;
+    margin-top: 14px;
+  }
+  .pack-card .info {
+    color: #bbb;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-top: 18px;
+    font-weight: 600;
+  }
+  .pack-prices {
+    display: flex;
+    gap: 20px;
+    margin-top: 22px;
+  }
+  .pack-prices .price b {
+    color: #e8d5a3;
+    font-size: 28px;
+    font-family: "Playfair Display", serif;
+    font-weight: 500;
+    display: block;
+  }
+  .pack-prices .price small {
+    color: #888;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+  .pack-list {
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+  }
+  .pack-list li {
+    color: #aaa;
+    font-size: 11px;
+    line-height: 1.8;
+    display: flex;
+    gap: 8px;
+  }
+  .pack-list li::before {
+    content: "✓";
+    color: #c9a961;
+  }
+  .btn-gold-pack {
+    margin-top: 24px;
+    display: inline-block;
+    border: 1px solid #c9a961;
+    color: #c9a961;
+    padding: 10px 22px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  .btn-gold-pack:hover {
+    background: #c9a961;
+    color: #000;
+  }
+
+  @media (max-width: 900px) {
+    .wed-hero-img {
+      width: 100%;
+    }
+    .wed-hero-overlay {
+      background: rgba(245, 243, 240, 0.85);
+    }
+    .wed-cards,
+    .wed-packages,
+    .wed-ceremony {
+      grid-template-columns: 1fr;
+    }
+    .wed-hero-content h1 {
+      font-size: 38px;
+    }
+    .wed-section2 h2 {
+      font-size: 30px;
+    }
+    .wed-full h2 {
+      font-size: 32px;
+      letter-spacing: 4px;
+    }
+  }
+</style>
+
+<div class="wed-hero">
+  <div class="wed-hero-img">
+    <img
+      src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1200"
+      alt="Couple"
+      onerror="
+        this.src =
+          'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200'
+      "
+    />
+  </div>
+  <div class="wed-hero-overlay"></div>
+  <div class="wed-hero-content">
+    <div class="small">WEDDINGS AT LUXESPACE</div>
+    <h1>TIMELESS<br />CELEBRATIONS,<br />DISTINCTLY YOURS</h1>
+    <p>
+      An architectural sanctuary designed with romantic white tones, soft
+      lighting, and airy elegance in the heart of Houston.
+    </p>
+    <a href="{% url 'event_create' %}" class="btn-black">BOOK A PRIVATE TOUR</a>
+  </div>
+</div>
+
+<div class="wed-section2">
+  <div class="wed-sec-num">01</div>
+  <div class="sub">WEDDINGS AT LUXESPACE</div>
+  <h2>TIMELESS CELEBRATIONS, DISTINCTLY<br />YOURS</h2>
+  <p class="desc">
+    An architectural sanctuary designed with romantic white tones, soft
+    lighting, and airy elegance in the heart of Houston.
+  </p>
+
+  <div class="wed-cards">
+    <div class="wed-card">
+      <img
+        src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600"
+        alt="Curated Beauty"
+      />
+      <div class="wed-card-body">
+        <h3>CURATED BEAUTY</h3>
+        <p>
+          Exclusive in-home dining experiences crafted just for you and your
+          guests. Perfect for intimate dinners and memorable nights.
+        </p>
+      </div>
+    </div>
+    <div class="wed-card">
+      <img
+        src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600"
+        alt="Seamless"
+      />
+      <div class="wed-card-body">
+        <h3>SEAMLESS EXPERIENCE</h3>
+        <p>
+          Our experienced venue team handles every logistical detail behind the
+          scenes so you can be fully present in the moment.
+        </p>
+      </div>
+    </div>
+    <div class="wed-card">
+      <img
+        src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600"
+        alt="Yours Completely"
+      />
+      <div class="wed-card-body">
+        <h3>YOURS COMPLETELY</h3>
+        <p>
+          Personalized touches, custom floral arch configurations, and versatile
+          floor layouts that make your celebration uniquely yours.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wed-full">
+  <img
+    src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600"
+    alt="LuxeSpace"
+  />
+  <h2>LUXESPACE</h2>
+</div>
+
+<div class="wed-ceremony">
+  <div class="wed-cer-left">
+    <div class="num">02</div>
+    <h2>CEREMONY & RECEPTION</h2>
+    <div class="line"></div>
+    <p class="intro">
+      Experience the harmony of our indoor climate-controlled ceremony space
+      paired with a private bridal suite.
+    </p>
+
+    <div class="wed-cer-item">
+      <div class="no">01</div>
+      <div>
+        <h4>INDOOR CEREMONY HALL</h4>
+        <p>
+          Ceremony and Reception Stage, custom ambient lighting scenes, and
+          comfortable seating for up to 150 guests.
+        </p>
+      </div>
+    </div>
+    <div class="wed-cer-item">
+      <div class="no">02</div>
+      <div>
+        <h4>BRIDAL SUITE</h4>
+        <p>
+          Vanity makeup station, Large full length mirrors plush seating, and
+          secure keyless entry.
+        </p>
+      </div>
+    </div>
+    <div class="wed-cer-item">
+      <div class="no">03</div>
+      <div>
+        <h4>CEREMONY AND RECEPTION STAGE DESIGN</h4>
+        <p>
+          Anchored by a 13-foot high-gloss white stage, thoughtfully designed
+          and fully styled by Luxespace for both ceremonies and receptions.
+        </p>
+      </div>
+    </div>
+    <a
+      href="{% url 'event_create' %}"
+      class="btn-black"
+      style="margin-top: 30px"
+      >BOOK A PRIVATE TOUR</a
+    >
+  </div>
+  <div class="wed-cer-right">
+    <img
+      src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800"
+      alt="Ceremony"
+    />
+  </div>
+</div>
+
+<div class="wed-packages">
+  <div class="pack-card">
+    <div class="top-small">THE COMPLETE WEDDING EXPERIENCE</div>
+    <h3>THE GRAND<br />WEDDING</h3>
+    <p class="pack-desc">
+      Our most complete wedding experience—an extended celebration with full
+      Luxespace styling, thoughtful details and the time to enjoy every moment.
+    </p>
+    <div class="info">12 HOURS · ACCOMMODATES UP TO 150 GUESTS</div>
+    <div class="info" style="color: #777; font-weight: 400; margin-top: 10px">
+      Package pricing includes 75 guests.<br />Guests 76-150 · $38 per
+      additional guest
+    </div>
+    <div class="pack-prices">
+      <div class="price">
+        <small>FRIDAY + SUNDAY</small><b>$8,500</b><small>/ 12 HOURS</small>
+      </div>
+      <div class="price">
+        <small>SATURDAY</small><b>$9,250</b><small>/ 12 HOURS</small>
+      </div>
+    </div>
+    <div class="info">ACCOMMODATES UP TO 150 GUESTS</div>
+    <ul class="pack-list">
+      <li>Full Access to the Luxespace Décor Collection</li>
+      <li>Two Signature Backdrops</li>
+      <li>Candles & Tablescape Styling</li>
+      <li>Digital photobooth</li>
+      <li>Custom Venue Mood Lighting</li>
+      <li>6 Hours Professional Videography</li>
+      <li>Champagne Wall Experience - 50 Champagne Flutes</li>
+      <li>On-Site Venue Representative</li>
+      <li>Complete Venue Setup</li>
+      <li>Post-Event Breakdown & Cleaning</li>
+      <li>Tables & Chairs</li>
+    </ul>
+    <a href="{% url 'event_create' %}" class="btn-gold-pack"
+      >BOOK THIS PACKAGE</a
+    >
+  </div>
+
+  <div class="pack-card">
+    <div class="top-small">THE SIGNATURE WEDDING EXPERIENCE</div>
+    <h3>THE SIGNATURE<br />WEDDING</h3>
+    <p class="pack-desc">
+      A beautifully curated ceremony and reception experience with full
+      Luxespace styling, thoughtfully designed for an intimate celebration.
+    </p>
+    <div class="info">10 HOURS · ACCOMMODATES UP TO 75 GUESTS</div>
+    <div class="info" style="color: #777; font-weight: 400; margin-top: 10px">
+      Package pricing includes 75 guests.
+    </div>
+    <div class="pack-prices">
+      <div class="price">
+        <small>FRIDAY + SUNDAY</small><b>$6,250</b><small>/ 10 HOURS</small>
+      </div>
+      <div class="price">
+        <small>SATURDAY</small><b>$6,750</b><small>/ 10 HOURS</small>
+      </div>
+    </div>
+    <div class="info">ACCOMMODATES UP TO 75 GUESTS</div>
+    <ul class="pack-list">
+      <li>Full Access to the Luxespace Décor Collection</li>
+      <li>Two Signature Backdrops</li>
+      <li>Fully styled ceremony & Reception Designed</li>
+      <li>Custom Venue Mood Lighting</li>
+      <li>4 Hours Professional Videography</li>
+      <li>On-Site Venue Representative</li>
+      <li>Complete Venue Setup</li>
+      <li>Post-Event Breakdown & Cleaning</li>
+      <li>Tables & Chairs</li>
+    </ul>
+    <a href="{% url 'event_create' %}" class="btn-gold-pack"
+      >BOOK THIS PACKAGE</a
+    >
+  </div>
+
+  <div class="pack-card">
+    <div class="top-small">THE RECEPTION EXPERIENCE</div>
+    <h3>THE RECEPTION</h3>
+    <p class="pack-desc">
+      A fully styled reception experience for couples ready to celebrate after
+      "I do"—with every detail thoughtfully prepared for your arrival.
+    </p>
+    <div class="info">8 HOURS · ACCOMMODATES UP TO 75 GUESTS</div>
+    <div class="info" style="color: #777; font-weight: 400; margin-top: 10px">
+      Package pricing includes 75 guests.<br />Guests 76-150 · $38 per
+      additional guest
+    </div>
+    <div class="pack-prices">
+      <div class="price">
+        <small>FRIDAY + SUNDAY</small><b>$5,250</b><small>/ 8 Hours</small>
+      </div>
+      <div class="price">
+        <small>SATURDAY</small><b>$5,750</b><small>/ 8 Hours</small>
+      </div>
+    </div>
+    <div class="info">ACCOMMODATES UP TO 75 GUESTS</div>
+    <ul class="pack-list">
+      <li>Full Access to the Luxespace Décor Collection</li>
+      <li>Two Signature Backdrops</li>
+      <li>Fully Styled Reception Stage Decor</li>
+      <li>Post-Event Breakdown & Cleaning</li>
+      <li>Post-Event Breakdown & Cleaning</li>
+      <li>Tables & Chairs</li>
+    </ul>
+    <a href="{% url 'event_create' %}" class="btn-gold-pack"
+      >BOOK THIS PACKAGE</a
+    >
+  </div>
+</div>
+{% endblock %}

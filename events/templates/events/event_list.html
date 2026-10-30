@@ -1,0 +1,303 @@
+{% extends "events/base.html" %}
+<!--  -->
+{% load static %}
+<!--  -->
+{% block title %}Events — Royalty Events Houston{% endblock %}
+<!--  -->
+{% block meta_description %}Browse upcoming events at Royalty Events Houston.
+Filter by category and book your seats online.{% endblock %}
+<!--  -->
+{% block extra_head %}
+<style>
+  .events-page {
+    background: #080808;
+    min-height: 80vh;
+    padding: 60px 5%;
+  }
+  .events-header {
+    margin-bottom: 40px;
+  }
+  .filter-bar {
+    display: flex;
+    gap: 16px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 10px 24px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid #2a2a2a;
+    color: #888;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s;
+    border-radius: 2px;
+    font-family: "Inter", sans-serif;
+  }
+  .filter-btn:hover,
+  .filter-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .event-card {
+    background: #111;
+    border: 1px solid #222;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .event-card-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    background: #111;
+    display: block;
+  }
+  .event-card-body {
+    padding: 16px;
+    background: #0d0d0d;
+  }
+  .event-title {
+    font-family: "Playfair Display", serif;
+    font-size: 16px;
+    color: #fff !important;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .event-card:hover {
+    transform: translateY(-4px);
+    border-color: #2a2a2a;
+  }
+  .event-category {
+    color: var(--gold);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .event-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+  .event-meta-item {
+    font-size: 11px;
+    color: #777;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .event-meta-item i {
+    color: var(--gold);
+  }
+  .event-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    border-top: 1px solid #1a1a1a;
+  }
+  .event-price {
+    font-family: "Playfair Display", serif;
+    font-size: 18px;
+    color: #fff;
+  }
+  .event-price-label {
+    font-size: 9px;
+    color: #666;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .event-seats-badge {
+    font-size: 10px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .seats-available {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ade80;
+  }
+  .seats-low {
+    background: rgba(234, 179, 8, 0.12);
+    color: #facc15;
+  }
+  .seats-full {
+    background: rgba(239, 68, 68, 0.12);
+    color: #f87171;
+  }
+  .event-book-btn {
+    margin-top: 14px;
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid #2a2a2a;
+    color: #888;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .event-book-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(201, 169, 97, 0.05);
+  }
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: #555;
+  }
+  .pagination-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 48px;
+  }
+  .page-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+    border: 1px solid #2a2a2a;
+    color: #777;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .page-btn:hover,
+  .page-btn.current {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  @media (max-width: 900px) {
+    .events-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 580px) {
+    .events-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="events-page">
+  <div class="events-header">
+    <div class="num-line">
+      <div class="line"></div>
+      <span>EVENTS</span>
+    </div>
+    <h1 class="section-heading">Upcoming Events</h1>
+    <p class="section-subtext" style="margin-top: 14px">
+      Browse and book seats for our upcoming events and celebrations at Royalty
+      Events Houston.
+    </p>
+  </div>
+
+  <div class="filter-bar">
+    <a href="?all=1" class="filter-btn {% if show_all %}active{% endif %}"
+      >ALL EVENTS</a
+    >
+    {% for cat in categories %}
+    <a
+      href="{% url 'event_list' %}?category={{ cat.name }}"
+      class="filter-btn {% if active_category == cat.name %}active{% endif %}"
+      >{{ cat.name }}</a
+    >
+    {% endfor %}
+  </div>
+
+  {% if page_obj.object_list %}
+  <div class="events-grid">
+    {% for event in page_obj.object_list %}
+    <article class="event-card">
+      <div class="event-card-body">
+        <div class="event-category">{{ event.category.name }}</div>
+        <h2 class="event-title">
+          <a
+            href="{% url 'event_detail' event.pk %}"
+            style="color: inherit; text-decoration: none"
+            >{{ event.title }}</a
+          >
+        </h2>
+        <div class="event-meta">
+          <div class="event-meta-item">
+            <i class="bi bi-calendar-event"></i> {{ event.event_date|date:"F j,
+            Y" }}
+          </div>
+          <div class="event-meta-item">
+            <i class="bi bi-clock"></i> {{ event.event_time|default:"12:00 AM"
+            }}
+          </div>
+          <div class="event-meta-item">
+            <i class="bi bi-geo-alt"></i> {{ event.location }}
+          </div>
+        </div>
+        <div class="event-footer">
+          <div>
+            <div class="event-price-label">Per Seat</div>
+            <div class="event-price">₹{{ event.price|floatformat:0 }}</div>
+          </div>
+          {% if event.is_full %}<span class="event-seats-badge seats-full"
+            >Sold Out</span
+          >
+          {% elif event.available_seats <= 10 %}<span
+            class="event-seats-badge seats-low"
+            >{{ event.available_seats }} left</span
+          >
+          {% else %}<span class="event-seats-badge seats-available"
+            >{{ event.available_seats }} available</span
+          >{% endif %}
+        </div>
+        {% if event.is_upcoming and not event.is_full %}
+        <a href="{% url 'event_detail' event.pk %}" class="event-book-btn"
+          >View & Book →</a
+        >
+        {% elif event.is_full %}
+        <div class="event-book-btn" style="pointer-events: none; opacity: 0.4">
+          Sold Out
+        </div>
+        {% else %}
+        <div class="event-book-btn" style="pointer-events: none; opacity: 0.4">
+          Event Passed
+        </div>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% if page_obj.has_other_pages %}
+  <nav class="pagination-row">
+    {% if page_obj.has_previous %}<a
+      href="?page={{ page_obj.previous_page_number }}{% if active_category %}&category={{ active_category }}{% endif %}"
+      class="page-btn"
+      >← Prev</a
+    >{% endif %} {% for num in page_obj.paginator.page_range %}<a
+      href="?page={{ num }}{% if active_category %}&category={{ active_category }}{% endif %}"
+      class="page-btn {% if page_obj.number == num %}current{% endif %}"
+      >{{ num }}</a
+    >{% endfor %} {% if page_obj.has_next %}<a
+      href="?page={{ page_obj.next_page_number }}{% if active_category %}&category={{ active_category }}{% endif %}"
+      class="page-btn"
+      >Next →</a
+    >{% endif %}
+  </nav>
+  {% endif %} {% else %}
+  <div class="empty-state">
+    <i class="bi bi-calendar-x"></i>
+    <p style="font-size: 16px; color: #555">No upcoming events found.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

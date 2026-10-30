@@ -1,0 +1,931 @@
+{% extends "events/base.html" %}
+<!--  -->
+{% load static %}
+<!--  -->
+{% block title %}THE VENUE - ROYALTY{% endblock %}
+<!--  -->
+{% block content %}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500&family=Inter:wght@300;400;500&display=swap");
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    background: #070707 !important;
+    font-family: "Inter", sans-serif;
+  }
+  .luxe-hero {
+    height: 95vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .luxe-hero-bg {
+    position: absolute;
+    inset: 0;
+  }
+  .luxe-hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .luxe-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
+  }
+  .luxe-hero::before {
+    content: "";
+    position: absolute;
+    left: 3%;
+    top: 15%;
+    width: 45px;
+    height: 65px;
+    border-left: 1.5px solid #c9a961;
+    border-top: 1.5px solid #c9a961;
+    z-index: 3;
+  }
+  .luxe-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
+    padding: 0 4%;
+  }
+  .luxe-hero-content h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 62px;
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: 2px;
+    line-height: 1.1;
+  }
+  .luxe-hero-content p {
+    color: #ddd;
+    font-size: 12.5px;
+    line-height: 1.7;
+    margin-top: 18px;
+    font-weight: 300;
+  }
+  .luxe-hero-btns {
+    margin-top: 28px;
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+  }
+  .btn-private {
+    background: #e8d5a3;
+    color: #000;
+    padding: 11px 22px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .btn-outline {
+    border: 1px solid #c9a961;
+    color: #c9a961;
+    padding: 11px 22px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-decoration: none;
+  }
+
+  .venue-full {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    background: #000;
+    overflow: hidden;
+  }
+  .venue-full-bg {
+    position: absolute;
+    inset: 0;
+  }
+  .venue-full-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .venue-full-grad {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+  }
+  .venue-full-content {
+    position: relative;
+    z-index: 2;
+    padding: 8% 6%;
+    max-width: 580px;
+  }
+  .num-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .num-line .line {
+    width: 35px;
+    height: 1px;
+    background: #c9a961;
+  }
+  .num-line span {
+    color: #c9a961;
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  .venue-full-content h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 42px;
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+  .venue-full-content .gold-line {
+    width: 80px;
+    height: 1px;
+    background: #c9a961;
+    margin: 18px 0;
+  }
+  .venue-full-content p {
+    color: #bbb;
+    font-size: 12.5px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .btn-beige {
+    margin-top: 26px;
+    display: inline-block;
+    background: #e8d5a3;
+    color: #000;
+    padding: 12px 24px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .wed-sec {
+    background: #080808;
+    padding: 90px 5% 60px;
+    position: relative;
+  }
+  .wed-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+    align-items: start;
+  }
+  .wed-top h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 44px;
+    color: #fff;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: 1px;
+  }
+  .wed-top p {
+    color: #aaa;
+    font-size: 12.5px;
+    line-height: 1.7;
+    max-width: 480px;
+  }
+  .wed-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .wed-card {
+    background: #000;
+    border: 1px solid #1a1a1a;
+    overflow: hidden;
+  }
+  .wed-card img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    display: block;
+  }
+  .wed-card-body {
+    padding: 16px 4px 20px;
+  }
+  .wed-card-body h4 {
+    font-family: "Playfair Display", serif;
+    color: #fff;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+  }
+  .wed-card-body p {
+    color: #777;
+    font-size: 11px;
+    line-height: 1.5;
+    margin-top: 6px;
+  }
+  .center-btn {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .arch-full {
+    width: 100%;
+    height: 85vh;
+    background: #000;
+    overflow: hidden;
+  }
+  .arch-full img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cel-sec {
+    background: #070707;
+    padding: 80px 5%;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .cel-left h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 42px;
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+  .cel-left .desc {
+    color: #aaa;
+    font-size: 12.5px;
+    line-height: 1.6;
+    margin-top: 14px;
+    max-width: 420px;
+  }
+  .cel-item {
+    display: flex;
+    gap: 16px;
+    margin-top: 22px;
+  }
+  .cel-item .no {
+    color: #c9a961;
+    font-size: 11px;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cel-item .no::after {
+    content: "";
+    width: 45px;
+    height: 1px;
+    background: #c9a961;
+    display: inline-block;
+  }
+  .cel-item h4 {
+    font-family: "Playfair Display", serif;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .cel-item p {
+    color: #777;
+    font-size: 11px;
+    line-height: 1.5;
+    margin-top: 3px;
+    max-width: 320px;
+  }
+  .cel-right {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .cel-right-top img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border: 1px solid #1a1a1a;
+  }
+  .cel-right-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .cel-right-bottom img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border: 1px solid #1a1a1a;
+  }
+
+  .team-sec {
+    background: #080808;
+    position: relative;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 60px 0;
+  }
+  .team-bg {
+    position: absolute;
+    inset: 0;
+  }
+  .team-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+    filter: brightness(0.6);
+  }
+  .team-center {
+    position: relative;
+    z-index: 2;
+    width: 68%;
+    max-width: 900px;
+    border: 1px solid rgba(201, 169, 97, 0.25);
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.25);
+  }
+  .team-center img {
+    width: 100%;
+    height: 560px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .exp-sec {
+    background: #0a1414;
+    padding: 90px 5%;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 60px;
+  }
+  .exp-left h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 38px;
+    color: #fff;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: 1px;
+  }
+  .exp-left p {
+    color: #aaa;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: 16px;
+    max-width: 380px;
+  }
+  .exp-row {
+    border-bottom: 1px solid #1e2e2e;
+    padding: 18px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .exp-row h4 {
+    font-family: "Playfair Display", serif;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+  .exp-row p {
+    color: #777;
+    font-size: 11px;
+    line-height: 1.5;
+    margin-top: 5px;
+    max-width: 460px;
+  }
+  .exp-row .r-no {
+    color: #c9a961;
+    font-size: 11px;
+    min-width: 20px;
+    text-align: right;
+  }
+
+  .faq-sec-venue {
+    background: #070707;
+    padding: 80px 5%;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 60px;
+    border-top: 1px solid #111;
+  }
+  .faq-left-venue {
+    border: 1px solid #1a1a1a;
+    padding: 6px;
+    position: relative;
+  }
+  .faq-left-venue::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    width: 40px;
+    height: 40px;
+    border-left: 1.5px solid #c9a961;
+    border-top: 1.5px solid #c9a961;
+    z-index: 2;
+  }
+  .faq-left-venue img {
+    width: 100%;
+    height: 680px;
+    object-fit: cover;
+    display: block;
+  }
+  .faq-top-label {
+    color: #c9a961;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .faq-top-label::before {
+    content: "";
+    width: 40px;
+    height: 1px;
+    background: #c9a961;
+    display: inline-block;
+  }
+  .faq-right-venue h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 38px;
+    color: #fff;
+    font-weight: 300;
+    margin-bottom: 32px;
+    line-height: 1.1;
+  }
+  .faq-item-venue {
+    border: 1px solid #222;
+    background: #0a0a0a;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .faq-item-venue.active {
+    border-color: #c9a961;
+    background: #0f0f0f;
+  }
+  .faq-q-venue {
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  .faq-item-venue.active .faq-q-venue {
+    color: #c9a961;
+    font-weight: 500;
+  }
+  .faq-q-venue .icon {
+    font-size: 16px;
+    color: #666;
+  }
+  .faq-item-venue.active .icon {
+    color: #c9a961;
+  }
+  .faq-a-venue {
+    display: none;
+    padding: 0 20px 20px;
+    color: #aaa;
+    font-size: 12px;
+    line-height: 1.8;
+    border-top: 1px solid #1a1a1a;
+    margin: 0 20px;
+    padding-top: 16px;
+    font-weight: 300;
+  }
+  .faq-item-venue.active .faq-a-venue {
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .luxe-hero-content h1 {
+      font-size: 36px;
+    }
+    .wed-top,
+    .cel-sec,
+    .exp-sec,
+    .faq-sec-venue,
+    .wed-grid,
+    .cel-right-bottom {
+      grid-template-columns: 1fr;
+    }
+    .team-center {
+      width: 90%;
+    }
+    .team-center img {
+      height: 360px;
+    }
+    .faq-left-venue img {
+      height: 400px;
+    }
+  }
+</style>
+
+<div class="luxe-hero">
+  <div class="luxe-hero-bg">
+    <img
+      src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&q=80"
+      alt="LuxeSpace Venue"
+    />
+  </div>
+  <div class="luxe-hero-overlay"></div>
+  <div class="luxe-hero-content">
+    <div
+      style="
+        color: #c9a961;
+        font-size: 10px;
+        letter-spacing: 4px;
+        margin-bottom: 40px;
+      "
+    >
+      ROYALTY
+    </div>
+    <h1>DESIGNED FOR THE<br />REFINED.</h1>
+    <p>
+      A refined setting for life's most meaningful celebrations. Luxespace is a
+      modern Houston event venue accommodating up to 150 guests, thoughtfully
+      designed for weddings, milestone celebrations, showers, and private
+      gatherings.
+    </p>
+    <div class="luxe-hero-btns">
+      <a href="{% url 'tour_venue' %}" class="btn-private"
+        >BOOK A PRIVATE TOUR</a
+      >
+      <a href="{% url 'gallery' %}" class="btn-outline">VIEW GALLERY</a>
+    </div>
+  </div>
+</div>
+
+<section class="venue-full">
+  <div class="venue-full-bg">
+    <img
+      src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=1600"
+      alt="Candle Tables"
+    />
+  </div>
+  <div class="venue-full-grad"></div>
+  <div class="venue-full-content">
+    <div class="num-line">
+      <div class="line"></div>
+      <span>01</span>
+    </div>
+    <h2>THE VENUE</h2>
+    <div class="gold-line"></div>
+    <p>
+      Architectural details include frosted windows, a dramatic black exposed
+      ceiling, a marble feature wall, polished concrete floors, sculptural ring
+      chandeliers, and customizable mood lighting designed to transform the
+      atmosphere of the space.
+    </p>
+    <a href="{% url 'tour_venue' %}" class="btn-beige">BOOK A PRIVATE TOUR</a>
+  </div>
+</section>
+
+<div class="wed-sec">
+  <div class="wed-top">
+    <div>
+      <div class="num-line">
+        <div class="line"></div>
+        <span>02</span>
+      </div>
+      <div
+        style="
+          color: #c9a961;
+          font-size: 9px;
+          letter-spacing: 2px;
+          margin-top: 6px;
+        "
+      >
+        OUR SERVICES
+      </div>
+      <h2 style="margin-top: 14px">WEDDINGS &<br />CELEBRATIONS</h2>
+    </div>
+    <div>
+      <p style="margin-top: 30px">
+        Your event deserves a setting as exceptional as the memories you'll
+        create. Luxespace offers a harmonious blend of moody romance and light,
+        airy elegance tailored for luxury weddings, milestone birthdays, baby
+        showers, and corporate galas.
+      </p>
+    </div>
+  </div>
+  <div class="wed-grid">
+    <div class="wed-card">
+      <img
+        src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80"
+        alt="LUXESPACE VENUE Sign"
+      />
+      <div class="wed-card-body">
+        <h4>CURATED BEAUTY</h4>
+        <p>
+          Thoughtful design & refined details create a breathtaking atmosphere.
+        </p>
+      </div>
+    </div>
+    <div class="wed-card">
+      <img
+        src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800&q=80"
+        alt="White Balloons"
+      />
+      <div class="wed-card-body">
+        <h4>SEAMLESS EXPERIENCE</h4>
+        <p>Our team handles every detail so you can be fully present.</p>
+      </div>
+    </div>
+    <div class="wed-card">
+      <img
+        src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80"
+        alt="Black Carpet Lanterns"
+      />
+      <div class="wed-card-body">
+        <h4>YOURS COMPLETELY</h4>
+        <p>Personalized touches that make your celebration uniquely yours.</p>
+      </div>
+    </div>
+  </div>
+  <div class="center-btn">
+    <a href="{% url 'tour_venue' %}" class="btn-outline">EXPLORE THE VENUE</a>
+  </div>
+</div>
+
+<div class="arch-full">
+  <img
+    src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1600&q=80"
+    alt="White Floral Arch with Candles"
+  />
+</div>
+
+<div class="cel-sec">
+  <div class="cel-left">
+    <div class="num-line">
+      <div class="line"></div>
+      <span>03</span>
+    </div>
+    <h2>CELEBRATIONS</h2>
+    <p class="desc">
+      Life's most meaningful moments deserve an unforgettable setting.
+      Birthdays, Showers, Anniversaries, and Corporate Galas designed with
+      precision.
+    </p>
+    <div class="cel-item">
+      <div class="no">01</div>
+      <div>
+        <h4>BIRTHDAYS</h4>
+        <p>
+          Milestone birthday celebrations with custom lighting & lounge setups.
+        </p>
+      </div>
+    </div>
+    <div class="cel-item">
+      <div class="no">02</div>
+      <div>
+        <h4>BABY SHOWERS</h4>
+        <p>
+          Elegant, warm gatherings tailored for welcoming new life in style.
+        </p>
+      </div>
+    </div>
+    <div class="cel-item">
+      <div class="no">03</div>
+      <div>
+        <h4>MILESTONES</h4>
+        <p>
+          Anniversaries, engagements, and private family dinners crafted with
+          care.
+        </p>
+      </div>
+    </div>
+    <a
+      href="{% url 'tour_venue' %}"
+      class="btn-outline"
+      style="display: inline-block; margin-top: 24px"
+      >BOOK A PRIVATE TOUR</a
+    >
+  </div>
+  <div class="cel-right">
+    <div class="cel-right-top">
+      <img
+        src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=80"
+        alt="Luxury White Floral Table"
+      />
+    </div>
+    <div class="cel-right-bottom">
+      <img
+        src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80"
+        alt="Black Table Setting"
+      /><img
+        src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&q=80"
+        alt="White Flowers Black Candles"
+      />
+    </div>
+  </div>
+</div>
+
+<section class="team-sec">
+  <div class="team-bg">
+    <img
+      src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1600"
+      alt="Team BG"
+    />
+  </div>
+  <div class="team-center">
+    <img
+      src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=1100&q=80"
+      alt="Royalty Events Concierge Team"
+    />
+  </div>
+</section>
+
+<div class="exp-sec">
+  <div class="exp-left">
+    <div class="num-line">
+      <div class="line"></div>
+      <span>04</span>
+    </div>
+    <h2>THE LUXESPACE<br />EXPERIENCE</h2>
+    <p>
+      An experience, considered down to the last detail. From our architectural
+      lighting to our curated vendor partnerships, every facet is designed for
+      absolute sophistication.
+    </p>
+    <a
+      href="{% url 'tour_venue' %}"
+      class="btn-outline"
+      style="
+        display: inline-block;
+        margin-top: 20px;
+        background: #e8d5a3;
+        color: #000;
+        border-color: #e8d5a3;
+      "
+      >EXPLORE THE VENUE</a
+    >
+  </div>
+  <div>
+    <div class="exp-row">
+      <div>
+        <h4>THE LUXESPACE EXPERIENCE</h4>
+        <p>
+          Our holistic approach to crafting unforgettable luxury events with
+          dedicated venue management.
+        </p>
+      </div>
+      <div class="r-no">01</div>
+    </div>
+    <div class="exp-row">
+      <div>
+        <h4>SIGNATURE STYLING</h4>
+        <p>
+          Elevated architectural design, intentional drapery, and customizable
+          ambient light scenes.
+        </p>
+      </div>
+      <div class="r-no">02</div>
+    </div>
+    <div class="exp-row">
+      <div>
+        <h4>THE DETAILS</h4>
+        <p>
+          The subtle finishing touches—custom bar fronts, marble accents, and
+          brass fixtures that set the tone.
+        </p>
+      </div>
+      <div class="r-no">03</div>
+    </div>
+    <div class="exp-row">
+      <div>
+        <h4>ELEVATED ADDITIONS</h4>
+        <p>
+          Enhancements including premium AV systems, outdoor terrace fire pits,
+          and champagne towers.
+        </p>
+      </div>
+      <div class="r-no">04</div>
+    </div>
+    <div class="exp-row">
+      <div>
+        <h4>SERVICE</h4>
+        <p>
+          Seamless execution from start to finish with dedicated venue liaisons
+          on hand during your event.
+        </p>
+      </div>
+      <div class="r-no">05</div>
+    </div>
+    <div class="exp-row">
+      <div>
+        <h4>SIGNATURE CATALOG</h4>
+        <p>
+          Access to our exclusive high-end inventory of tables, velvet lounge
+          furniture, and decor.
+        </p>
+      </div>
+      <div class="r-no">06</div>
+    </div>
+  </div>
+</div>
+
+<div class="faq-sec-venue">
+  <div class="faq-left-venue">
+    <img
+      src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=900&q=80"
+      alt="Luxury Venue"
+    />
+  </div>
+  <div class="faq-right-venue">
+    <div class="faq-top-label">05</div>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item-venue active" onclick="toggleFaqVenue(this)">
+      <div class="faq-q-venue">
+        <span>How Far In Advance Should I Book?</span
+        ><span class="icon">-</span>
+      </div>
+      <div class="faq-a-venue">
+        We recommend booking 6 months in advance for weekend weddings and peak
+        season galas to secure your desired date. For weekday celebrations and
+        intimate private events, 2 to 4 months in advance is usually sufficient.
+      </div>
+    </div>
+    <div class="faq-item-venue" onclick="toggleFaqVenue(this)">
+      <div class="faq-q-venue">
+        <span>What Is Included In The Venue Rental Package?</span
+        ><span class="icon">+</span>
+      </div>
+      <div class="faq-a-venue">
+        You can view what our rental packages have to offer by navigating to the
+        wedding page or the celebrations page. Tables, chairs, lighting, suites,
+        security and cleaning included.
+      </div>
+    </div>
+    <div class="faq-item-venue" onclick="toggleFaqVenue(this)">
+      <div class="faq-q-venue">
+        <span>What Is The Maximum Guest Capacity At LuxeSpace HTX?</span
+        ><span class="icon">+</span>
+      </div>
+      <div class="faq-a-venue">
+        LuxeSpace comfortably accommodates up to 350 guests for a seated banquet
+        dinner with dance floor. Up to 500 guests can be accommodated for
+        cocktail style events.
+      </div>
+    </div>
+    <div class="faq-item-venue" onclick="toggleFaqVenue(this)">
+      <div class="faq-q-venue">
+        <span>Can I Bring My Own Outside Caterers & Vendors?</span
+        ><span class="icon">+</span>
+      </div>
+      <div class="faq-a-venue">
+        Yes, we allow licensed outside caterers. For specialty vendors like
+        florists, designers, DJs, event planners, and decorators, we also
+        provide access to our curated signature vendor list featuring Houston's
+        top event professionals.
+      </div>
+    </div>
+    <div class="faq-item-venue" onclick="toggleFaqVenue(this)">
+      <div class="faq-q-venue">
+        <span>Is Setup And Cleanup Included In The Venue Rental?</span
+        ><span class="icon">+</span>
+      </div>
+      <div class="faq-a-venue">
+        Yes. Our team handles complete table and chair arrangement according to
+        your custom floor plan prior to your event, as well as breakdown and
+        cleanup after your celebration concludes.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleFaqVenue(el) {
+    document.querySelectorAll(".faq-item-venue").forEach((item) => {
+      if (item !== el) {
+        item.classList.remove("active");
+        item.querySelector(".icon").innerText = "+";
+      }
+    });
+    el.classList.toggle("active");
+    el.querySelector(".icon").innerText = el.classList.contains("active")
+      ? "-"
+      : "+";
+  }
+</script>
+{% endblock %}

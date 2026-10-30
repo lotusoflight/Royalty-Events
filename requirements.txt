@@ -1,0 +1,7 @@
+Django==5.2.15
+asgiref==3.11.1
+sqlparse==0.5.5
+pillow==12.2.0
+python-dotenv==1.1.0
+gunicorn==23.0.0
+whitenoise==6.9.0
